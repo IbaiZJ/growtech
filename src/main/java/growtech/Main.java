@@ -8,9 +8,6 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.formdev.flatlaf.util.SystemInfo;
 
 import growtech.config.AppKonfigurazioa;
@@ -18,7 +15,6 @@ import growtech.theme.TemaKudeatzailea;
 import growtech.ui.ItxuraPrintzipala;
 
 public class Main {
-    private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args) {
 
@@ -32,7 +28,7 @@ public class Main {
                 awtAppClassNameField.setAccessible(true);
                 awtAppClassNameField.set(toolkit, AppKonfigurazioa.APP_IZENA);
             } catch (NoSuchFieldException | InaccessibleObjectException | IllegalAccessException e) {
-                LOGGER.debug("Arazoa izena jartzerakoan!!!");
+                System.out.println("Arazoa izena jartzerakoan!!!");
             }
         }
 

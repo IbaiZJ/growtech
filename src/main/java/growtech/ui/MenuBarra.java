@@ -8,6 +8,8 @@ import growtech.mqtt.MQTT;
 import growtech.mqtt.dialog.KonektatuDialogoa;
 import growtech.theme.TemaKudeatzailea;
 import growtech.ui.dialog.AboutDialogoa;
+import growtech.ui.panelak.DeskonektatutaPanela;
+import growtech.ui.panelak.MapaPanela;
 import lombok.Getter;
 
 import java.awt.event.KeyEvent;
@@ -20,13 +22,13 @@ public class MenuBarra {
     private NireAkzioa argia, iluna, koloreGlobala; 
     private NireAkzioa about;
     private @Getter NireAkzioa user;
-    private JFrame itxura;
+    private ItxuraPrintzipala itxura;
     private MQTT mqtt;
 
     private JCheckBoxMenuItem argi;
     private JCheckBoxMenuItem ilun;
 
-    public MenuBarra(JFrame itxura, MQTT mqtt) {
+    public MenuBarra(ItxuraPrintzipala itxura, MQTT mqtt) {
         hasieratuAkzioak();
         argi = new JCheckBoxMenuItem();
         ilun = new JCheckBoxMenuItem();
@@ -126,14 +128,7 @@ public class MenuBarra {
                 konektatuAkzioaEman();
             }
             if(testua.equals("Deskonektatu")) {
-                try {
-                    mqtt.disconnect();
-                } catch (Exception ex) {
-                    JOptionPane.showMessageDialog(itxura, "Errore bat egon da\ndeskonektatzerakoan", 
-                    "Errorea", JOptionPane.ERROR_MESSAGE);
-                }
-                konektatu.setEnabled(true);
-                deskonektatu.setEnabled(false);
+                deskonektatuAkzioaEman();
             }
             if(testua.equals("Irten")) {
                 try {
@@ -160,10 +155,9 @@ public class MenuBarra {
                 Color kolore = JColorChooser.showDialog(itxura, "Aukeratu Kolorea", null);
                 TemaKudeatzailea.aktualizatuKoloreGlobala("#" + Integer.toHexString(kolore.getRGB()).substring(2));
             }
-
+            
             if(testua.equals("About")) {
-                @SuppressWarnings("unused")
-                AboutDialogoa dialogoa = new AboutDialogoa(itxura);
+                new AboutDialogoa(itxura);
             }
         }
     }
@@ -172,5 +166,24 @@ public class MenuBarra {
         new KonektatuDialogoa(itxura, mqtt);
         konektatu.setEnabled(false);
         deskonektatu.setEnabled(true);
+
+        MapaPanela mapaPanela = new MapaPanela(itxura);
+        itxura.getTabPanela().removeAll();
+        itxura.getTabPanela().addTab(" MAPA ", mapaPanela.sortuMapaPanela());
+    }
+
+    public void deskonektatuAkzioaEman() {
+        try {
+            mqtt.disconnect();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(itxura, "Errore bat egon da\ndeskonektatzerakoan", 
+            "Errorea", JOptionPane.ERROR_MESSAGE);
+        }
+        konektatu.setEnabled(true);
+        deskonektatu.setEnabled(false);
+        
+        DeskonektatutaPanela deskonektatutaPanela = new DeskonektatutaPanela();
+        itxura.getTabPanela().removeAll();
+        itxura.getTabPanela().addTab(" KONEKTATU ", deskonektatutaPanela.sortuDeskonektatutaPanela());
     }
 }

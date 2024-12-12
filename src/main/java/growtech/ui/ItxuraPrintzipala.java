@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.FlowLayout;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,14 +22,14 @@ import growtech.config.AppKonfigurazioa;
 import growtech.mqtt.MQTT;
 import lombok.Getter;
 
-
+@Getter 
 public class ItxuraPrintzipala extends JFrame {
     private MQTT mqtt;
-    private @Getter MenuBarra menuBarra;
+    private MenuBarra menuBarra;
     private JTabbedPane tabPanela;
-    private @Getter JLabel zenbakia;
+    private JLabel zenbakia;
 
-    private @Getter List<Negutegia> negutegi;
+    private List<Negutegia> negutegi;
 
     public ItxuraPrintzipala() {
         this.setTitle(AppKonfigurazioa.APP_IZENA);
@@ -68,16 +67,17 @@ public class ItxuraPrintzipala extends JFrame {
     }
 
     private Component sortuLeihoZentrala() {
-        MapaPanela mapaPanela = new MapaPanela(this);
-        JPanel panel1 = new JPanel(new FlowLayout());
         
-        zenbakia = new JLabel("Bidalitako balioa");
-        panel1.add(zenbakia);
+        // JPanel panel1 = new JPanel(new FlowLayout());
+        
+        // zenbakia = new JLabel("Bidalitako balioa");
+        // panel1.add(zenbakia);
 
-        tabPanela.addTab(getTitle(), panel1);
-        tabPanela.addTab(" MAPA ", mapaPanela.sortuMapaPanela());
+        
+        // tabPanela.addTab(" KONEKTATU ", deskonektatutaPanela.sortuDeskonektatutaPanela());
+        // tabPanela.addTab(" MAPA ", mapaPanela.sortuMapaPanela());
         // tabPanela.addTab(getTitle(), panel3);
-
+        
         return tabPanela;
     }
 

@@ -56,7 +56,7 @@ public class KonektatuDialogoa extends JDialog implements WindowListener {
 
     @Override
     public void windowOpened(WindowEvent e) {
-        System.out.println("La ventana se ha abierto");
+        // System.out.println("La ventana se ha abierto");
         try {
             mqtt.klienteraKonektatu();
             progressBar.setString("[MQTT] Subscribe ");

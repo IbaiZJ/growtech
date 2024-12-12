@@ -1,8 +1,6 @@
 package growtech.util;
 
 import com.formdev.flatlaf.util.SystemInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.io.IOException;
@@ -10,7 +8,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public class AppUtils {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AppUtils.class);
 
     public static String getAppBertsioa() {
         var p = AppUtils.class.getPackage();
@@ -21,7 +18,7 @@ public class AppUtils {
         if (SystemInfo.isLinux) return sabalduUrlNabigatzaileanXDGOpenErabiltzen(url);
         if (Desktop.isDesktopSupported()) return sabalduUrlNabigatzaileanDesktopErabiltzen(url);
 
-        LOGGER.error("Ezin izan da ireki URLa");
+        System.out.println("Ezin izan da ireki URLa");
         return false;
     }
 
@@ -32,7 +29,7 @@ public class AppUtils {
             runtime.exec(new String[]{"sh", "-c", "xdg-open " + url});
             return true;
         } catch (IOException e) {
-            LOGGER.error("Ezin izan da ireki URLa", e);
+            System.out.println("Ezin izan da ireki URLa");
             return false;
         }
     }
@@ -44,7 +41,7 @@ public class AppUtils {
             desktop.browse(new URI(url));
             return true;
         } catch (IOException | URISyntaxException e) {
-            LOGGER.error("Ezin izan da ireki URLa", e);
+            System.out.println("Ezin izan da ireki URLa");
             return false;
         }
     }

@@ -1,4 +1,4 @@
-package growtech.ui;
+package growtech.ui.panelak;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -19,6 +19,9 @@ import org.jxmapviewer.viewer.DefaultWaypoint;
 import org.jxmapviewer.viewer.GeoPosition;
 import org.jxmapviewer.viewer.Waypoint;
 import org.jxmapviewer.viewer.WaypointPainter;
+
+import growtech.ui.ItxuraPrintzipala;
+import growtech.ui.Negutegia;
 
 
 public class MapaPanela {
@@ -77,13 +80,11 @@ public class MapaPanela {
         for (Negutegia negutegi : itxura.getNegutegi()) {
             position = negutegi.getPosizioa();
             waypoint.add(new DefaultWaypoint(position));
-            
         }
         Set<Waypoint> waypointSet = new HashSet<>(waypoint);
         waypointPainter.setWaypoints(waypointSet);
 
         mapViewer.setOverlayPainter(waypointPainter);
-        
         panela.add(mapViewer);
         
         return panela;
