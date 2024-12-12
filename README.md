@@ -1,4 +1,22 @@
 
 # GROW TECH
 
-Kaixo
+
+
+
+## Zelan instalatu
+
+#### Deskargatu src
+
+```http
+  git clone 
+```
+
+#### 
+
+```http
+  mvn clean install
+```
+
+
+
