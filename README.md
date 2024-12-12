@@ -9,7 +9,7 @@
 #### Deskargatu src
 
 ```http
-  git clone 
+  git clone https://github.com/IbaiZJ/growtech
 ```
 
 #### 
