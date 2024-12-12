@@ -25,7 +25,7 @@ import lombok.Getter;
 
 
 public class ItxuraPrintzipala extends JFrame {
-    MQTT mqtt;
+    private MQTT mqtt;
     private @Getter MenuBarra menuBarra;
     private JTabbedPane tabPanela;
     private @Getter JLabel zenbakia;
