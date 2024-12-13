@@ -45,12 +45,12 @@ public class ItxuraPrintzipala extends JFrame {
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
-        tabPanela = new JTabbedPane();
+        
         menuBarra = new MenuBarra(this, mqtt);
         negutegi = new ArrayList<>();
         hasieratuNegutegiak();
+        this.setContentPane(sortuLeihoPanela()); 
         this.setJMenuBar(menuBarra.sortuMenuBar());
-        this.setContentPane(sortuLeihoPanela());
         
         this.setVisible(true);
 
@@ -67,7 +67,7 @@ public class ItxuraPrintzipala extends JFrame {
     }
 
     private Component sortuLeihoZentrala() {
-        
+        tabPanela = new JTabbedPane();
         // JPanel panel1 = new JPanel(new FlowLayout());
         
         // zenbakia = new JLabel("Bidalitako balioa");
@@ -78,6 +78,7 @@ public class ItxuraPrintzipala extends JFrame {
         // tabPanela.addTab(" MAPA ", mapaPanela.sortuMapaPanela());
         // tabPanela.addTab(getTitle(), panel3);
         
+
         return tabPanela;
     }
 
@@ -104,7 +105,7 @@ public class ItxuraPrintzipala extends JFrame {
         negutegi.add(new Negutegia("Elorrio", new GeoPosition(43.13518, -2.543006)));
         negutegi.add(new Negutegia("Bergara", new GeoPosition(43.11608, -2.418478)));
         negutegi.add(new Negutegia("Aretxabaleta", new GeoPosition(43.02098, -2.509590)));
-        negutegi.add(new Negutegia("Beasain", new GeoPosition(43.06259, -2.204373)));
+        negutegi.add(new Negutegia("Beasain", new GeoPosition(43.04901, -2.193210)));
         negutegi.add(new Negutegia("Ondarroa", new GeoPosition(43.33234, -2.453796)));
         negutegi.add(new Negutegia("Meñaka", new GeoPosition(43.36791, -2.797169)));
         negutegi.add(new Negutegia("Azpeitia", new GeoPosition(43.18431, -2.258009)));

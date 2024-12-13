@@ -110,6 +110,31 @@ public class MenuBarra {
 
         return laguntzaMenua;
     }
+    
+    public void konektatuAkzioaEman() {
+        new KonektatuDialogoa(itxura, mqtt);
+        konektatu.setEnabled(false);
+        deskonektatu.setEnabled(true);
+
+        MapaPanela mapaPanela = new MapaPanela(itxura);
+        itxura.getTabPanela().removeAll();
+        itxura.getTabPanela().addTab(" MAPA ", mapaPanela.sortuMapaPanela());
+    }
+
+    public void deskonektatuAkzioaEman() {
+        try {
+            mqtt.disconnect();
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(itxura, "Errore bat egon da\ndeskonektatzerakoan", 
+            "Errorea", JOptionPane.ERROR_MESSAGE);
+        }
+        konektatu.setEnabled(true);
+        deskonektatu.setEnabled(false);
+        
+        DeskonektatutaPanela deskonektatutaPanela = new DeskonektatutaPanela();
+        itxura.getTabPanela().removeAll();
+        itxura.getTabPanela().addTab(" KONEKTATU ", deskonektatutaPanela.sortuDeskonektatutaPanela());
+    }
 
     private class NireAkzioa extends AbstractAction {
         String testua;
@@ -162,28 +187,4 @@ public class MenuBarra {
         }
     }
 
-    public void konektatuAkzioaEman() {
-        new KonektatuDialogoa(itxura, mqtt);
-        konektatu.setEnabled(false);
-        deskonektatu.setEnabled(true);
-
-        MapaPanela mapaPanela = new MapaPanela(itxura);
-        itxura.getTabPanela().removeAll();
-        itxura.getTabPanela().addTab(" MAPA ", mapaPanela.sortuMapaPanela());
-    }
-
-    public void deskonektatuAkzioaEman() {
-        try {
-            mqtt.disconnect();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(itxura, "Errore bat egon da\ndeskonektatzerakoan", 
-            "Errorea", JOptionPane.ERROR_MESSAGE);
-        }
-        konektatu.setEnabled(true);
-        deskonektatu.setEnabled(false);
-        
-        DeskonektatutaPanela deskonektatutaPanela = new DeskonektatutaPanela();
-        itxura.getTabPanela().removeAll();
-        itxura.getTabPanela().addTab(" KONEKTATU ", deskonektatutaPanela.sortuDeskonektatutaPanela());
-    }
 }

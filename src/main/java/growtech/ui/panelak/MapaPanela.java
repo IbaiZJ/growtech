@@ -22,14 +22,26 @@ import org.jxmapviewer.viewer.WaypointPainter;
 
 import growtech.ui.ItxuraPrintzipala;
 import growtech.ui.Negutegia;
+import growtech.ui.ktrl.MapaKtrl;
+import growtech.ui.kudeatzaileak.MapaKudeatzailea;
+import lombok.Getter;
+import lombok.Setter;
 
 
 public class MapaPanela {
-    ItxuraPrintzipala itxura;
-    JList<Negutegia> negutegiJL;
+    private ItxuraPrintzipala itxura;
+    private MapaKtrl mapaKtrl;
+    private MapaKudeatzailea mapaKudeatzailea;
+    private @Getter JList<Negutegia> negutegiJL;
+
+    private @Getter @Setter JPanel mapaJPanel;
+    private @Getter @Setter JXMapViewer mapa;
+    private @Getter GeoPosition hasierakoPosizioa;
     
     public MapaPanela(ItxuraPrintzipala itxura) {
         this.itxura = itxura;
+        this.mapaKudeatzailea = new MapaKudeatzailea(this);
+        this.mapaKtrl = new MapaKtrl(this, mapaKudeatzailea);
         sortuMapaPanela();
     }
 
@@ -49,7 +61,7 @@ public class MapaPanela {
         negutegiJL = new JList<>();
         // negutegiJL.setCellRenderer(new MapaJLAdaptadorea());
         negutegiJL.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        // negutegiJL.addListSelectionListener(this);
+        negutegiJL.addListSelectionListener(mapaKtrl);
         negutegiJL.setListData(itxura.getNegutegi().toArray(new Negutegia[0]));
         panela.setViewportView(negutegiJL);
 
@@ -57,37 +69,37 @@ public class MapaPanela {
     }
 
     private Component sortuEskumakoPanela() {
-        JPanel panela = new JPanel(new BorderLayout());
+        mapaJPanel = new JPanel(new BorderLayout());
         
-        JXMapViewer mapViewer = new JXMapViewer();
-        OSMTileFactoryInfo tileFactoryInfo = new OSMTileFactoryInfo();
+        mapa = new JXMapViewer();
+        OSMTileFactoryInfo mapaMota = new OSMTileFactoryInfo();
         // TileFactoryInfo tileFactoryInfo = new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.MAP);
         // TileFactoryInfo tileFactoryInfo = new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.HYBRID);
         // TileFactoryInfo tileFactoryInfo = new VirtualEarthTileFactoryInfo(VirtualEarthTileFactoryInfo.SATELLITE);
-        mapViewer.setTileFactory(new org.jxmapviewer.viewer.DefaultTileFactory(tileFactoryInfo));
-        org.jxmapviewer.input.PanMouseInputListener panMouseListener = new org.jxmapviewer.input.PanMouseInputListener(mapViewer);
-        mapViewer.addMouseListener(panMouseListener);
-        mapViewer.addMouseMotionListener(panMouseListener);
-        mapViewer.addMouseWheelListener(new org.jxmapviewer.input.ZoomMouseWheelListenerCenter(mapViewer));
-        GeoPosition startPosition = new GeoPosition(43.1000, -2.4500);
-        mapViewer.setZoom(9);
-        mapViewer.setAddressLocation(startPosition);
+        mapa.setTileFactory(new org.jxmapviewer.viewer.DefaultTileFactory(mapaMota));
+        org.jxmapviewer.input.PanMouseInputListener saguListener = new org.jxmapviewer.input.PanMouseInputListener(mapa);
+        mapa.addMouseListener(saguListener);
+        mapa.addMouseMotionListener(saguListener);
+        mapa.addMouseWheelListener(new org.jxmapviewer.input.ZoomMouseWheelListenerCenter(mapa));
+        hasierakoPosizioa = new GeoPosition(43.1000, -2.4500);
+        mapa.setZoom(9); // hasierako zoom = 9
+        mapa.setAddressLocation(hasierakoPosizioa);
 
         // Puntuak
-        GeoPosition position;
+        GeoPosition posizioa;
         WaypointPainter<Waypoint> waypointPainter = new WaypointPainter<>();
         List<Waypoint> waypoint = new ArrayList<>();
         for (Negutegia negutegi : itxura.getNegutegi()) {
-            position = negutegi.getPosizioa();
-            waypoint.add(new DefaultWaypoint(position));
+            posizioa = negutegi.getPosizioa();
+            waypoint.add(new DefaultWaypoint(posizioa));
         }
         Set<Waypoint> waypointSet = new HashSet<>(waypoint);
         waypointPainter.setWaypoints(waypointSet);
 
-        mapViewer.setOverlayPainter(waypointPainter);
-        panela.add(mapViewer);
+        mapa.setOverlayPainter(waypointPainter);
+        mapaJPanel.add(mapa);
         
-        return panela;
+        return mapaJPanel;
     }
     
 }

@@ -10,7 +10,7 @@ import lombok.Getter;
 public class Negutegia {
     private String izena;
     private GeoPosition posizioa;
-    private Image irudi; 
+    private Image irudi;
     
     public Negutegia(String izena, GeoPosition posizioa) {
         this.izena = izena;
