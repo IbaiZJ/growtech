@@ -98,16 +98,16 @@ public class ItxuraPrintzipala extends JFrame {
     }
 
     private void hasieratuNegutegiak() {
-        negutegi.add(new Negutegia("Gazteiz", new GeoPosition(42.87514, -2.662218)));
-        negutegi.add(new Negutegia("Bilbo", new GeoPosition(43.27549, -2.920400)));
-        negutegi.add(new Negutegia("Donostia", new GeoPosition(43.29478, -1.983199)));
-        negutegi.add(new Negutegia("Amorebieta", new GeoPosition(43.21962, -2.744389)));
-        negutegi.add(new Negutegia("Elorrio", new GeoPosition(43.13518, -2.543006)));
-        negutegi.add(new Negutegia("Bergara", new GeoPosition(43.11608, -2.418478)));
-        negutegi.add(new Negutegia("Aretxabaleta", new GeoPosition(43.02098, -2.509590)));
-        negutegi.add(new Negutegia("Beasain", new GeoPosition(43.04901, -2.193210)));
-        negutegi.add(new Negutegia("Ondarroa", new GeoPosition(43.33234, -2.453796)));
-        negutegi.add(new Negutegia("Meñaka", new GeoPosition(43.36791, -2.797169)));
-        negutegi.add(new Negutegia("Azpeitia", new GeoPosition(43.18431, -2.258009)));
+        negutegi.add(new Negutegia("Gazteiz", "Araba", new GeoPosition(42.87514, -2.662218)));
+        negutegi.add(new Negutegia("Bilbo", "Bizkaia", new GeoPosition(43.27549, -2.920400)));
+        negutegi.add(new Negutegia("Donostia", "Gipuzkoa", new GeoPosition(43.29478, -1.983199)));
+        negutegi.add(new Negutegia("Amorebieta", "Bizkaia", new GeoPosition(43.21962, -2.744389)));
+        negutegi.add(new Negutegia("Elorrio", "Bizkaia", new GeoPosition(43.13518, -2.543006)));
+        negutegi.add(new Negutegia("Bergara", "Gipuzkoa", new GeoPosition(43.11608, -2.418478)));
+        negutegi.add(new Negutegia("Aretxabaleta", "Gipuzkoa", new GeoPosition(43.02098, -2.509590)));
+        negutegi.add(new Negutegia("Beasain", "Gipuzkoa", new GeoPosition(43.04901, -2.193210)));
+        negutegi.add(new Negutegia("Ondarroa", "Bizkaia", new GeoPosition(43.33234, -2.453796)));
+        negutegi.add(new Negutegia("Meñaka", "Bizkaia", new GeoPosition(43.36791, -2.797169)));
+        negutegi.add(new Negutegia("Azpeitia", "Gipuzkoa", new GeoPosition(43.18431, -2.258009)));
     }
 }

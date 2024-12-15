@@ -31,6 +31,7 @@ public class AboutDialogoa extends JDialog implements ActionListener {
         this.setLocationRelativeTo(null);
         this.setContentPane(sortuDialogoPanela());
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        // this.setUndecorated(true);
 		this.setVisible(true);
     }
 
