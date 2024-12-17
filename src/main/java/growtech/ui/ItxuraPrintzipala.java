@@ -20,6 +20,7 @@ import org.jxmapviewer.viewer.GeoPosition;
 
 import growtech.config.AppKonfigurazioa;
 import growtech.mqtt.MQTT;
+import growtech.util.klaseak.Negutegia;
 import lombok.Getter;
 
 @Getter 
@@ -98,16 +99,16 @@ public class ItxuraPrintzipala extends JFrame {
     }
 
     private void hasieratuNegutegiak() {
-        negutegi.add(new Negutegia("Gazteiz", "Araba", new GeoPosition(42.87514, -2.662218)));
-        negutegi.add(new Negutegia("Bilbo", "Bizkaia", new GeoPosition(43.27549, -2.920400)));
-        negutegi.add(new Negutegia("Donostia", "Gipuzkoa", new GeoPosition(43.29478, -1.983199)));
-        negutegi.add(new Negutegia("Amorebieta", "Bizkaia", new GeoPosition(43.21962, -2.744389)));
-        negutegi.add(new Negutegia("Elorrio", "Bizkaia", new GeoPosition(43.13518, -2.543006)));
-        negutegi.add(new Negutegia("Bergara", "Gipuzkoa", new GeoPosition(43.11608, -2.418478)));
-        negutegi.add(new Negutegia("Aretxabaleta", "Gipuzkoa", new GeoPosition(43.02098, -2.509590)));
-        negutegi.add(new Negutegia("Beasain", "Gipuzkoa", new GeoPosition(43.04901, -2.193210)));
-        negutegi.add(new Negutegia("Ondarroa", "Bizkaia", new GeoPosition(43.33234, -2.453796)));
-        negutegi.add(new Negutegia("Meñaka", "Bizkaia", new GeoPosition(43.36791, -2.797169)));
-        negutegi.add(new Negutegia("Azpeitia", "Gipuzkoa", new GeoPosition(43.18431, -2.258009)));
+        negutegi.add(new Negutegia("Gazteiz", "Araba", new GeoPosition(42.87514, -2.662218), "/img/negutegiak/negutegiIrudi (1).jpg"));
+        negutegi.add(new Negutegia("Bilbo", "Bizkaia", new GeoPosition(43.27549, -2.920400), "/img/negutegiak/negutegiIrudi (2).jpg"));
+        negutegi.add(new Negutegia("Donostia", "Gipuzkoa", new GeoPosition(43.29478, -1.983199), "/img/negutegiak/negutegiIrudi (3).jpg"));
+        negutegi.add(new Negutegia("Amorebieta", "Bizkaia", new GeoPosition(43.21962, -2.744389), "/img/negutegiak/negutegiIrudi (4).jpg"));
+        negutegi.add(new Negutegia("Elorrio", "Bizkaia", new GeoPosition(43.13518, -2.543006), "/img/negutegiak/negutegiIrudi (5).jpg"));
+        negutegi.add(new Negutegia("Bergara", "Gipuzkoa", new GeoPosition(43.11608, -2.418478), "/img/negutegiak/negutegiIrudi (6).jpg"));
+        negutegi.add(new Negutegia("Aretxabaleta", "Gipuzkoa", new GeoPosition(43.02098, -2.509590), "/img/negutegiak/negutegiIrudi (7).jpg"));
+        negutegi.add(new Negutegia("Beasain", "Gipuzkoa", new GeoPosition(43.04901, -2.193210), "/img/negutegiak/negutegiIrudi (8).jpg"));
+        negutegi.add(new Negutegia("Ondarroa", "Bizkaia", new GeoPosition(43.33234, -2.453796), "/img/negutegiak/negutegiIrudi (9).jpg"));
+        negutegi.add(new Negutegia("Meñaka", "Bizkaia", new GeoPosition(43.36791, -2.797169), "/img/negutegiak/negutegiIrudi (10).jpg"));
+        negutegi.add(new Negutegia("Azpeitia", "Gipuzkoa", new GeoPosition(43.18431, -2.258009), "/img/negutegiak/negutegiIrudi (11).jpg"));
     }
 }

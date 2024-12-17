@@ -1,6 +1,7 @@
-package growtech.ui;
+package growtech.util.klaseak;
 
-import java.awt.Image;
+
+import javax.swing.ImageIcon;
 
 import org.jxmapviewer.viewer.GeoPosition;
 
@@ -11,12 +12,13 @@ public class Negutegia {
     private String lurraldea;
     private String herria;
     private GeoPosition posizioa;
-    private Image irudi;
+    private ImageIcon irudi;
     
-    public Negutegia(String herria, String lurraldea, GeoPosition posizioa) {
+    public Negutegia(String herria, String lurraldea, GeoPosition posizioa, String irudi) {
         this.herria = herria;
         this.lurraldea = lurraldea;
         this.posizioa = posizioa;
+        this.irudi = new ImageIcon(getClass().getResource(irudi));
     }
 
     @Override

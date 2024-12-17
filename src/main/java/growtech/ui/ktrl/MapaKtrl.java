@@ -8,9 +8,11 @@ import java.awt.event.ItemListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import growtech.ui.Negutegia;
+import growtech.config.AppKonfigurazioa;
 import growtech.ui.modeloak.MapaKudeatzailea;
 import growtech.ui.panelak.MapaPanela;
+import growtech.util.AppUtils;
+import growtech.util.klaseak.Negutegia;
 
 public class MapaKtrl implements ListSelectionListener, ActionListener, ItemListener {
     private MapaPanela mapaPanela;
@@ -26,21 +28,24 @@ public class MapaKtrl implements ListSelectionListener, ActionListener, ItemList
         if (e.getValueIsAdjusting())
             return;
         if(mapaPanela.getNegutegiJL().getSelectedValue() != null) {
-            Negutegia negutegia = mapaPanela.getNegutegiJL().getSelectedValue();
-            mapaKudeatzailea.mapaPanelaHandituta(negutegia);
+            mapaKudeatzailea.mapaHandituta();
             mapaPanela.getBotoia().setEnabled(true);
         }
         if(mapaPanela.getNegutegiJL().getSelectedValue() == null) {
-            mapaKudeatzailea.mapaPanelaPred();
+            mapaKudeatzailea.mapaPred();
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getActionCommand().equals("Botoia")) {
-            mapaKudeatzailea.mapaPanelaPred();
+            mapaKudeatzailea.mapaPred();
             mapaPanela.getNegutegiJL().clearSelection();
             mapaPanela.getBotoia().setEnabled(false);
+        }
+        if(e.getActionCommand().equals("maps")) {
+            Negutegia negutegia = mapaPanela.getNegutegiJL().getSelectedValue();
+            AppUtils.sabalduUrlNabigatzailean("https://www.google.com/maps?q="+ negutegia.getPosizioa().getLatitude() +"," + negutegia.getPosizioa().getLongitude());
         }
     }
 

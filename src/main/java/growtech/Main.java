@@ -13,6 +13,10 @@ import com.formdev.flatlaf.util.SystemInfo;
 import growtech.config.AppKonfigurazioa;
 import growtech.theme.TemaKudeatzailea;
 import growtech.ui.ItxuraPrintzipala;
+import growtech.ui.dialog.AdminUserDialogoa;
+import growtech.util.Enkriptazioa;
+import growtech.util.userKudeaketa.ErabiltzaileKudeaketa;
+import growtech.util.userKudeaketa.Erabiltzailea;
 
 public class Main {
 
@@ -58,9 +62,14 @@ public class Main {
         
         TemaKudeatzailea.ezarriArgiaTema();
 
-        
-        // AdminUserDialogoa adminUserDialogoa = new AdminUserDialogoa(null);
-        // if(!adminUserDialogoa.isITXI_DA_X()) 
+        /*AdminUserDialogoa adminUserDialogoa = new AdminUserDialogoa(null);
+        if(!adminUserDialogoa.isITXI_DA_X()) {
             new ItxuraPrintzipala();
+        }*/
+        new ItxuraPrintzipala();
     }
 }
+/*
+ErabiltzaileKudeaketa.sortuErabiltzailea(
+            new Erabiltzailea("admin", "admin", "admin", 
+            Enkriptazioa.kontrasenaEnkriptatu("porrupatata"), "ADMIN"));*/

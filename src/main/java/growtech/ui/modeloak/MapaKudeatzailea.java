@@ -1,8 +1,7 @@
 package growtech.ui.modeloak;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,69 +9,29 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import javax.swing.JPanel;
-import javax.swing.JSplitPane;
-
 import growtech.ui.ItxuraPrintzipala;
-import growtech.ui.Negutegia;
-import growtech.ui.panelak.MapaPanela;
 import growtech.util.filtro.FiltroSelektore;
+import growtech.util.klaseak.Negutegia;
 
 public class MapaKudeatzailea {
-    private MapaPanela mapaPanela;
+    PropertyChangeSupport aldaketak;
     private ItxuraPrintzipala itxuraPrintzipala;
+    public final static String P_MAPA_HANDITUTA = "MAPAHANDITUTA";
+    public final static String P_MAPA_NORMAL = "MAPANORMAL";
 
-    public MapaKudeatzailea(MapaPanela mapaPanela, ItxuraPrintzipala itxuraPrintzipala) {
-        this.mapaPanela = mapaPanela;
+    public MapaKudeatzailea(ItxuraPrintzipala itxuraPrintzipala) {
+        aldaketak = new PropertyChangeSupport(itxuraPrintzipala);
         this.itxuraPrintzipala = itxuraPrintzipala;
     }
-
-    public void mapaHanditu(Negutegia negutegia) {
-        mapaPanela.getMapa().setZoom(3);
-        mapaPanela.getMapa().setAddressLocation(negutegia.getPosizioa());
-    }
-
-    public void mapaPanelaTxikituta()  {
-        mapaPanela.getMapa().setZoom(9);
-        mapaPanela.getMapa().setAddressLocation(mapaPanela.getHasierakoPosizioa());
-    }
     
-    public void mapaPanelaHandituta(Negutegia negutegia) {
-        JSplitPane panela = new JSplitPane(JSplitPane.VERTICAL_SPLIT, 
-        true, mapaPanela.getMapa(), sortuNegutegiInformazioaPanela());
-        panela.setDividerLocation(550);
-        panela.setDividerSize(10);
-        // panela.setEnabled(false);
-        
-        mapaPanela.getMapaJPanel().removeAll();
-        mapaPanela.getMapaJPanel().revalidate();
-        mapaPanela.getMapaJPanel().repaint(); 
-
-        
-        mapaPanela.getMapaJPanel().add(panela);
-        mapaHanditu(negutegia);
+    public void mapaHandituta() {
+        aldaketak.firePropertyChange(P_MAPA_HANDITUTA, -1, "hasi");
     }
 
-    private Component sortuNegutegiInformazioaPanela() {
-        JPanel panela = new JPanel(new BorderLayout());
-        panela.setBackground(Color.white);
 
-        return panela;
+    public void mapaPred() {
+        aldaketak.firePropertyChange(P_MAPA_NORMAL, -1, "hasi");
     }
-
-    public void mapaPanelaPred() {
-        mapaPanela.getMapaJPanel().removeAll();
-        mapaPanela.getMapaJPanel().revalidate();
-        mapaPanela.getMapaJPanel().repaint(); 
-
-        mapaPanela.getMapaJPanel().add(mapaPanela.getMapa());
-        mapaPanelaTxikituta();
-    }
-
-    /*public void negutegiJLAktualizatu() {
-        bistaratzekoak = sortuBistaratzekoak();
-        negutegiJL.setListData(bistaratzekoak);
-    }*/
 
     public String[] jasoAukerak(FiltroSelektore<Negutegia, String> selector, String mota) {
         List<String> aukerak1 = new ArrayList<>();
@@ -120,4 +79,13 @@ public class MapaKudeatzailea {
 		}
 		return Negutegiak;
 	}
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        aldaketak.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        aldaketak.removePropertyChangeListener(listener);
+    }
+
 }

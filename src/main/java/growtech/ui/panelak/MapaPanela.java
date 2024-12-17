@@ -1,8 +1,11 @@
 package growtech.ui.panelak;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.GridLayout;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -27,15 +30,16 @@ import org.jxmapviewer.viewer.WaypointPainter;
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 import growtech.ui.ItxuraPrintzipala;
-import growtech.ui.Negutegia;
+import growtech.ui.adaptadore.MapaJLAdaptadorea;
 import growtech.ui.ktrl.MapaKtrl;
 import growtech.ui.modeloak.MapaKudeatzailea;
 import growtech.util.filtro.FiltroSelektore;
 import growtech.util.filtro.NegutegiFSFactory;
+import growtech.util.klaseak.Negutegia;
 import lombok.Getter;
 
 
-public class MapaPanela {
+public class MapaPanela implements PropertyChangeListener {
     private ItxuraPrintzipala itxura;
     private MapaKtrl mapaKtrl;
     private MapaKudeatzailea mapaKudeatzailea;
@@ -48,9 +52,12 @@ public class MapaPanela {
     private List<JComboBox<String>> aukerenZerrenda;
     private Negutegia [] bistaratzekoak;
 
+    private JButton mapsBotoia;
+
     public MapaPanela(ItxuraPrintzipala itxura) {
         this.itxura = itxura;
-        this.mapaKudeatzailea = new MapaKudeatzailea(this, itxura);
+        this.mapaKudeatzailea = new MapaKudeatzailea(itxura);
+        this.mapaKudeatzailea.addPropertyChangeListener(this);
         this.mapaKtrl = new MapaKtrl(this, mapaKudeatzailea);
         aukerenZerrenda = new ArrayList<>();
     }
@@ -88,7 +95,7 @@ public class MapaPanela {
 
         filtroPanela.add(sortuOpzioPanela(NegutegiFSFactory.getFiltroLurralde("Denak"), "LURRALDEA"));
         filtroPanela.add(sortuOpzioPanela(NegutegiFSFactory.getFiltroHerria("Denak"), "HERRIA"));
-
+        
         panela.add(botoia, BorderLayout.WEST);
         panela.add(filtroPanela, BorderLayout.CENTER);
 
@@ -111,7 +118,7 @@ public class MapaPanela {
 				JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         
         negutegiJL = new JList<>();
-        // negutegiJL.setCellRenderer(new MapaJLAdaptadorea());
+        negutegiJL.setCellRenderer(new MapaJLAdaptadorea());
         negutegiJL.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         negutegiJL.addListSelectionListener(mapaKtrl);
         negutegiJLAktualizatu();
@@ -183,7 +190,68 @@ public class MapaPanela {
         mapa.setOverlayPainter(waypointPainter);
         mapaJPanel.add(mapa);
     }
+
+    public void mapaHanditu(Negutegia negutegia) {
+        mapa.setZoom(3);
+        mapa.setAddressLocation(negutegia.getPosizioa());
+    }
+
+    public void mapaPanelaTxikituta()  {
+        mapa.setZoom(9);
+        mapa.setAddressLocation(hasierakoPosizioa);
+    }
     
+    public void mapaPanelaHandituta(Negutegia negutegia) {
+        JSplitPane panela = new JSplitPane(JSplitPane.VERTICAL_SPLIT, 
+        true, mapa, sortuNegutegiInformazioaPanela(negutegia));
+        panela.setDividerLocation(550);
+        panela.setDividerSize(10);
+        // panela.setEnabled(false);
+        
+        mapaJPanel.removeAll();
+        mapaJPanel.revalidate();
+        mapaJPanel.repaint(); 
+
+        
+        mapaJPanel.add(panela);
+        mapaHanditu(negutegia);
+    }
+
+    private Component sortuNegutegiInformazioaPanela(Negutegia negutegia) {
+        JPanel panela = new JPanel(new BorderLayout());
+        panela.setBackground(Color.white);
+
+        mapsBotoia = new JButton(new FlatSVGIcon("svg/maps.svg", 40, 40));
+        mapsBotoia.setActionCommand("maps");
+        mapsBotoia.addActionListener(mapaKtrl);
+        
+        panela.add(mapsBotoia, BorderLayout.NORTH);
+
+        return panela;
+    }
+
+    public void mapaPanelaPred() {
+        mapaJPanel.removeAll();
+        mapaJPanel.revalidate();
+        mapaJPanel.repaint(); 
+
+        mapaJPanel.add(mapa);
+        mapaPanelaTxikituta();
+    }
+
+    
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        String propietatea = evt.getPropertyName();
+
+        if(propietatea.equals(MapaKudeatzailea.P_MAPA_HANDITUTA)) {
+            Negutegia negutegia = negutegiJL.getSelectedValue();
+            mapaPanelaHandituta(negutegia);
+        }
+        if(propietatea.equals(MapaKudeatzailea.P_MAPA_NORMAL)) {
+            mapaPanelaPred();
+        }
+    }
 }
 
 
