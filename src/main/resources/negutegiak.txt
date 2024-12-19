@@ -1,0 +1,11 @@
+Gazteiz,Araba,42.87514,-2.662218,4
+Bilbo,Bizkaia,43.27549,-2.920400,3
+Donostia,Gipuzkoa,43.29478,-1.983199,6
+Amorebieta,Bizkaia,43.21962,-2.744389,7
+Elorrio,Bizkaia,43.13518,-2.543006,3
+Bergara,Gipuzkoa,43.11608,-2.418478,6
+Aretxabaleta,Gipuzkoa,43.02098,-2.509590,2
+Beasain,Gipuzkoa,43.04901,-2.193210,6
+Ondarroa,Bizkaia,43.33234,-2.453796,3
+Meinaka,Bizkaia,43.36791,-2.797169,3
+Azpeitia,Gipuzkoa,43.18431,-2.258009,1

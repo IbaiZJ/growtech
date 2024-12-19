@@ -3,7 +3,7 @@ package growtech.util.userKudeaketa;
 import java.util.ArrayList;
 import java.util.List;
 
-import growtech.util.klaseak.Negutegia;
+import growtech.util.negutegiKudeaketa.Negutegia;
 import lombok.Getter;
 import lombok.Setter;
 

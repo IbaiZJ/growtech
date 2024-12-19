@@ -4,6 +4,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,21 +18,25 @@ import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JToolBar;
 
-import org.jxmapviewer.viewer.GeoPosition;
-
 import growtech.config.AppKonfigurazioa;
 import growtech.mqtt.MQTT;
-import growtech.util.klaseak.Negutegia;
+import growtech.ui.ktrl.MapaKtrl;
+import growtech.ui.panelak.DeskonektatutaPanela;
+import growtech.ui.panelak.MapaPanela;
+import growtech.ui.panelak.NegutegiInfoPanela;
+import growtech.util.negutegiKudeaketa.NegutegiKudeaketa;
+import growtech.util.negutegiKudeaketa.Negutegia;
 import lombok.Getter;
 
 @Getter 
-public class ItxuraPrintzipala extends JFrame {
+public class ItxuraPrintzipala extends JFrame implements PropertyChangeListener {
     private MQTT mqtt;
     private MenuBarra menuBarra;
     private JTabbedPane tabPanela;
     private JLabel zenbakia;
-
+    private MapaPanela mapaPanela;
     private List<Negutegia> negutegi;
+    private MapaKtrl mapaKtrl;
 
     public ItxuraPrintzipala() {
         this.setTitle(AppKonfigurazioa.APP_IZENA);
@@ -41,13 +47,21 @@ public class ItxuraPrintzipala extends JFrame {
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
+        this.mapaPanela = new MapaPanela(this);
+        this.mapaPanela.addPropertyChangeListener(this);
+        mapaKtrl = mapaPanela.getMapaKtrl();
+        mapaKtrl.addPropertyChangeListener(this);
+        
         try {
             mqtt = new MQTT(this);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
         
+        
         menuBarra = new MenuBarra(this, mqtt);
+        menuBarra.addPropertyChangeListener(this);
+        tabPanela = new JTabbedPane();
         negutegi = new ArrayList<>();
         hasieratuNegutegiak();
         this.setContentPane(sortuLeihoPanela()); 
@@ -62,25 +76,9 @@ public class ItxuraPrintzipala extends JFrame {
         JPanel panela = new JPanel(new BorderLayout());
 
         panela.add(sortuToolBar(), BorderLayout.WEST);
-        panela.add(sortuLeihoZentrala(), BorderLayout.CENTER);
+        panela.add(tabPanela, BorderLayout.CENTER);
 
         return panela;
-    }
-
-    private Component sortuLeihoZentrala() {
-        tabPanela = new JTabbedPane();
-        // JPanel panel1 = new JPanel(new FlowLayout());
-        
-        // zenbakia = new JLabel("Bidalitako balioa");
-        // panel1.add(zenbakia);
-
-        
-        // tabPanela.addTab(" KONEKTATU ", deskonektatutaPanela.sortuDeskonektatutaPanela());
-        // tabPanela.addTab(" MAPA ", mapaPanela.sortuMapaPanela());
-        // tabPanela.addTab(getTitle(), panel3);
-        
-
-        return tabPanela;
     }
 
     private Component sortuToolBar() {
@@ -99,16 +97,38 @@ public class ItxuraPrintzipala extends JFrame {
     }
 
     private void hasieratuNegutegiak() {
-        negutegi.add(new Negutegia("Gazteiz", "Araba", new GeoPosition(42.87514, -2.662218), "/img/negutegiak/negutegiIrudi (1).jpg"));
-        negutegi.add(new Negutegia("Bilbo", "Bizkaia", new GeoPosition(43.27549, -2.920400), "/img/negutegiak/negutegiIrudi (2).jpg"));
-        negutegi.add(new Negutegia("Donostia", "Gipuzkoa", new GeoPosition(43.29478, -1.983199), "/img/negutegiak/negutegiIrudi (3).jpg"));
-        negutegi.add(new Negutegia("Amorebieta", "Bizkaia", new GeoPosition(43.21962, -2.744389), "/img/negutegiak/negutegiIrudi (4).jpg"));
-        negutegi.add(new Negutegia("Elorrio", "Bizkaia", new GeoPosition(43.13518, -2.543006), "/img/negutegiak/negutegiIrudi (5).jpg"));
-        negutegi.add(new Negutegia("Bergara", "Gipuzkoa", new GeoPosition(43.11608, -2.418478), "/img/negutegiak/negutegiIrudi (6).jpg"));
-        negutegi.add(new Negutegia("Aretxabaleta", "Gipuzkoa", new GeoPosition(43.02098, -2.509590), "/img/negutegiak/negutegiIrudi (7).jpg"));
-        negutegi.add(new Negutegia("Beasain", "Gipuzkoa", new GeoPosition(43.04901, -2.193210), "/img/negutegiak/negutegiIrudi (8).jpg"));
-        negutegi.add(new Negutegia("Ondarroa", "Bizkaia", new GeoPosition(43.33234, -2.453796), "/img/negutegiak/negutegiIrudi (9).jpg"));
-        negutegi.add(new Negutegia("Meñaka", "Bizkaia", new GeoPosition(43.36791, -2.797169), "/img/negutegiak/negutegiIrudi (10).jpg"));
-        negutegi.add(new Negutegia("Azpeitia", "Gipuzkoa", new GeoPosition(43.18431, -2.258009), "/img/negutegiak/negutegiIrudi (11).jpg"));
+        NegutegiKudeaketa negutegiKudeaketa = new NegutegiKudeaketa();
+        negutegiKudeaketa.hasieratuNegutegiak(negutegi);
+    }
+
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        String propietatea = evt.getPropertyName();
+
+        if(propietatea.equals(MenuBarra.P_KONEKTATU)) {
+            tabPanela.removeAll();
+            tabPanela.addTab(" MAPA ", mapaPanela.sortuMapaPanela());
+        }
+        if(propietatea.equals(MenuBarra.P_DESKONEKTATU)) {
+            DeskonektatutaPanela deskonektatutaPanela = new DeskonektatutaPanela();
+            tabPanela.removeAll();
+            tabPanela.addTab(" KONEKTATU ", deskonektatutaPanela.sortuDeskonektatutaPanela());
+        }
+        if(propietatea.equals(MenuBarra.P_DESKONEKTATU)) {
+
+        }
+        if(propietatea.equals(MapaPanela.P_MAPA_NEGUTEGI_INFO)) {
+            NegutegiInfoPanela negutegiInfoPanela = new NegutegiInfoPanela(this);
+            if (tabPanela.getTabCount() == 1)
+                tabPanela.addTab(" NEGUTEGI ", negutegiInfoPanela.negutegiInfoPZentrala());
+        }
+        if(propietatea.equals(MapaPanela.P_MAPA_NEGUTEGI_INFO_EXIT)) {
+            if (tabPanela.getTabCount() > 1)
+                tabPanela.remove(1);
+        }
+        if(propietatea.equals(MapaKtrl.P_MAPA_NEGUTEGI_INFO_CLICK)) {
+            tabPanela.setSelectedIndex(1);
+        }
     }
 }

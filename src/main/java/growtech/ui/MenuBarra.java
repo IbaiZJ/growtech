@@ -1,6 +1,21 @@
 package growtech.ui;
 
-import javax.swing.*;
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.Box;
+import javax.swing.Icon;
+import javax.swing.JCheckBoxMenuItem;
+import javax.swing.JColorChooser;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
 
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
@@ -8,15 +23,10 @@ import growtech.mqtt.MQTT;
 import growtech.mqtt.dialog.KonektatuDialogoa;
 import growtech.theme.TemaKudeatzailea;
 import growtech.ui.dialog.AboutDialogoa;
-import growtech.ui.panelak.DeskonektatutaPanela;
-import growtech.ui.panelak.MapaPanela;
 import lombok.Getter;
 
-import java.awt.event.KeyEvent;
-import java.awt.Color;
-import java.awt.event.ActionEvent;
-
 public class MenuBarra {
+    PropertyChangeSupport aldaketak;
     private @Getter NireAkzioa konektatu, deskonektatu, konekzioKonf;
     private NireAkzioa irten;
     private NireAkzioa argia, iluna, koloreGlobala; 
@@ -28,12 +38,24 @@ public class MenuBarra {
     private JCheckBoxMenuItem argi;
     private JCheckBoxMenuItem ilun;
 
+    public final static String P_KONEKTATU = "KONEKTATU";
+    public final static String P_DESKONEKTATU = "DESKONEKTATU";
+
     public MenuBarra(ItxuraPrintzipala itxura, MQTT mqtt) {
+        aldaketak = new PropertyChangeSupport(itxura);
         hasieratuAkzioak();
         argi = new JCheckBoxMenuItem();
         ilun = new JCheckBoxMenuItem();
         this.itxura = itxura;
         this.mqtt = mqtt;
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        aldaketak.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        aldaketak.removePropertyChangeListener(listener);
     }
 
     private void hasieratuAkzioak() {
@@ -115,10 +137,8 @@ public class MenuBarra {
         new KonektatuDialogoa(itxura, mqtt);
         konektatu.setEnabled(false);
         deskonektatu.setEnabled(true);
-
-        MapaPanela mapaPanela = new MapaPanela(itxura);
-        itxura.getTabPanela().removeAll();
-        itxura.getTabPanela().addTab(" MAPA ", mapaPanela.sortuMapaPanela());
+        
+        aldaketak.firePropertyChange(P_KONEKTATU, -1, "konektatu");
     }
 
     public void deskonektatuAkzioaEman() {
@@ -131,9 +151,7 @@ public class MenuBarra {
         konektatu.setEnabled(true);
         deskonektatu.setEnabled(false);
         
-        DeskonektatutaPanela deskonektatutaPanela = new DeskonektatutaPanela();
-        itxura.getTabPanela().removeAll();
-        itxura.getTabPanela().addTab(" KONEKTATU ", deskonektatutaPanela.sortuDeskonektatutaPanela());
+        aldaketak.firePropertyChange(P_DESKONEKTATU, -1, "deskonektatu");
     }
 
     private class NireAkzioa extends AbstractAction {

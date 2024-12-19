@@ -10,8 +10,9 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import growtech.ui.ItxuraPrintzipala;
+import growtech.ui.panelak.MapaPanela;
 import growtech.util.filtro.FiltroSelektore;
-import growtech.util.klaseak.Negutegia;
+import growtech.util.negutegiKudeaketa.Negutegia;
 
 public class MapaKudeatzailea {
     PropertyChangeSupport aldaketak;
@@ -19,18 +20,18 @@ public class MapaKudeatzailea {
     public final static String P_MAPA_HANDITUTA = "MAPAHANDITUTA";
     public final static String P_MAPA_NORMAL = "MAPANORMAL";
 
-    public MapaKudeatzailea(ItxuraPrintzipala itxuraPrintzipala) {
-        aldaketak = new PropertyChangeSupport(itxuraPrintzipala);
+    public MapaKudeatzailea(ItxuraPrintzipala itxuraPrintzipala, MapaPanela mapaPanela) {
+        aldaketak = new PropertyChangeSupport(mapaPanela);
         this.itxuraPrintzipala = itxuraPrintzipala;
     }
     
     public void mapaHandituta() {
-        aldaketak.firePropertyChange(P_MAPA_HANDITUTA, -1, "hasi");
+        aldaketak.firePropertyChange(P_MAPA_HANDITUTA, -1, null);
     }
 
 
     public void mapaPred() {
-        aldaketak.firePropertyChange(P_MAPA_NORMAL, -1, "hasi");
+        aldaketak.firePropertyChange(P_MAPA_NORMAL, -1, null);
     }
 
     public String[] jasoAukerak(FiltroSelektore<Negutegia, String> selector, String mota) {

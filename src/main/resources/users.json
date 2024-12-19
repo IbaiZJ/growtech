@@ -3,5 +3,20 @@
   "abizena" : "admin",
   "erabiltzaile" : "admin",
   "pasahitza" : "$2a$10$YzAMmw1EPopX5dF.8NC35uhC9DyvNzOd31rOcrEPRVTYGTrcBsm7a",
-  "mota" : "ADMIN"
+  "mota" : "ADMIN",
+  "negutegiak" : null
+}, {
+  "izena" : "Ibai",
+  "abizena" : "Lazkano",
+  "erabiltzaile" : "ilazkano",
+  "pasahitza" : "$2a$10$TB0JT6UjzZiJSHdKMP1PWu8Sfng5BnTiAFFcbiUVW/8NTrpu5H2mi",
+  "mota" : "USER",
+  "negutegiak" : null
+}, {
+  "izena" : "Alex",
+  "abizena" : "Zabaleta",
+  "erabiltzaile" : "azabaleta",
+  "pasahitza" : "$2a$10$//zSITQHPyY2W9a4jV9hmemFVTTL9Zow/jMILxKF1alLKxO136h/C",
+  "mota" : "USER",
+  "negutegiak" : [ ]
 } ]

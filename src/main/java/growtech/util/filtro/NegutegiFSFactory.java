@@ -1,6 +1,6 @@
 package growtech.util.filtro;
 
-import growtech.util.klaseak.Negutegia;
+import growtech.util.negutegiKudeaketa.Negutegia;
 
 public class NegutegiFSFactory {
     public static FiltroSelektore<Negutegia, String> getFiltroLurralde(String balioa) {

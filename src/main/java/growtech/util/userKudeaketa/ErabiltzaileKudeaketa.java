@@ -13,11 +13,11 @@ import growtech.util.Enkriptazioa;
 
 public class ErabiltzaileKudeaketa {
 
-    public void sortuErabiltzailea(Erabiltzailea erabiltzailea) {
+    public static void sortuErabiltzailea(Erabiltzailea erabiltzailea) {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            File file = new File(getClass().getResource("/users.json").toURI());
-            // File file = new File("src/main/resources/users.json");
+            // File file = new File(getClass().getResource("/users.json").toURI());
+            File file = new File("src/main/resources/users.json");
             List<Erabiltzailea> erabiltzaileak;
             
             if (file.exists() && file.length() > 0) {
@@ -50,8 +50,8 @@ public class ErabiltzaileKudeaketa {
         return new ArrayList<>();
     }
 
-    /*
-    public List<Erabiltzailea> erabiltzaileakIrakurri() {
+    
+    /*public List<Erabiltzailea> erabiltzaileakIrakurri() {
         try {
             ObjectMapper mapper = new ObjectMapper();
             File file = new File(getClass().getResource("/users.json").toURI());
@@ -68,8 +68,8 @@ public class ErabiltzaileKudeaketa {
             System.out.println("Errore JSON: " + ex.getMessage());
         }
         return null;
-    }
-    */
+    }*/
+    
     
     public static boolean bilatuErabiltzailea(String erabiltzaile, String pasahitza) {
         ErabiltzaileKudeaketa erabiltzaileKudeaketa = new ErabiltzaileKudeaketa();

@@ -2,7 +2,7 @@ package growtech.ui.adaptadore;
 
 import javax.swing.*;
 
-import growtech.util.klaseak.Negutegia;
+import growtech.util.negutegiKudeaketa.Negutegia;
 
 import java.awt.*;
 

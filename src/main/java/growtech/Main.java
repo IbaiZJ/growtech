@@ -62,14 +62,14 @@ public class Main {
         
         TemaKudeatzailea.ezarriArgiaTema();
 
-        /*AdminUserDialogoa adminUserDialogoa = new AdminUserDialogoa(null);
-        if(!adminUserDialogoa.isITXI_DA_X()) {
-            new ItxuraPrintzipala();
-        }*/
+        /*ErabiltzaileKudeaketa.sortuErabiltzailea(
+            new Erabiltzailea("Alex", "Zabaleta", "azabaleta", 
+            Enkriptazioa.kontrasenaEnkriptatu("jesko"), "USER"));*/
+        
+        // AdminUserDialogoa adminUserDialogoa = new AdminUserDialogoa(null);
+        // if(!adminUserDialogoa.isITXI_DA_X()) {
+        // }
         new ItxuraPrintzipala();
+            
     }
 }
-/*
-ErabiltzaileKudeaketa.sortuErabiltzailea(
-            new Erabiltzailea("admin", "admin", "admin", 
-            Enkriptazioa.kontrasenaEnkriptatu("porrupatata"), "ADMIN"));*/
