@@ -63,6 +63,7 @@ public class MapaPanela implements PropertyChangeListener {
     PropertyChangeSupport aldaketak;
     public final static String P_MAPA_NEGUTEGI_INFO = "NEGUTEGIINFO";
     public final static String P_MAPA_NEGUTEGI_INFO_EXIT = "EXIT";
+    public static Negutegia AUKERATUTAKO_NEGUTEGIA;
     
 
     public MapaPanela(ItxuraPrintzipala itxura) {
@@ -298,6 +299,7 @@ public class MapaPanela implements PropertyChangeListener {
         List<Erabiltzailea> erabiltzaileak = new ArrayList<>();
         ErabiltzaileKudeaketa erabiltzaileKudeaketa = new ErabiltzaileKudeaketa();
         erabiltzaileak = erabiltzaileKudeaketa.erabiltzaileakIrakurri();
+        
         erabiltzaileJL = new JList<>();
         erabiltzaileJL.setCellRenderer(new negutegiInfoPanelAdaptadore());
         erabiltzaileJL.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -331,7 +333,12 @@ public class MapaPanela implements PropertyChangeListener {
         String propietatea = evt.getPropertyName();
 
         if(propietatea.equals(MapaKudeatzailea.P_MAPA_HANDITUTA)) {
+            // lehenengo bi linea hauek negutegi pestaña aktualizatzeko
+            mapaPanelaPred();
+            aldaketak.firePropertyChange(P_MAPA_NEGUTEGI_INFO_EXIT, -1, null);
+
             Negutegia negutegia = negutegiJL.getSelectedValue();
+            AUKERATUTAKO_NEGUTEGIA = negutegia;
             mapaPanelaHandituta(negutegia);                
             aldaketak.firePropertyChange(P_MAPA_NEGUTEGI_INFO, -1, null);
         }

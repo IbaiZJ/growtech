@@ -34,9 +34,10 @@ public class ItxuraPrintzipala extends JFrame implements PropertyChangeListener 
     private MenuBarra menuBarra;
     private JTabbedPane tabPanela;
     private JLabel zenbakia;
-    private MapaPanela mapaPanela;
     private List<Negutegia> negutegi;
+    private MapaPanela mapaPanela;
     private MapaKtrl mapaKtrl;
+    private DeskonektatutaPanela deskonektatutaPanela;
 
     public ItxuraPrintzipala() {
         this.setTitle(AppKonfigurazioa.APP_IZENA);
@@ -51,6 +52,7 @@ public class ItxuraPrintzipala extends JFrame implements PropertyChangeListener 
         this.mapaPanela.addPropertyChangeListener(this);
         mapaKtrl = mapaPanela.getMapaKtrl();
         mapaKtrl.addPropertyChangeListener(this);
+        deskonektatutaPanela = new DeskonektatutaPanela();
         
         try {
             mqtt = new MQTT(this);
@@ -111,17 +113,14 @@ public class ItxuraPrintzipala extends JFrame implements PropertyChangeListener 
             tabPanela.addTab(" MAPA ", mapaPanela.sortuMapaPanela());
         }
         if(propietatea.equals(MenuBarra.P_DESKONEKTATU)) {
-            DeskonektatutaPanela deskonektatutaPanela = new DeskonektatutaPanela();
             tabPanela.removeAll();
+            // tabPanela.setVisible(false);
             tabPanela.addTab(" KONEKTATU ", deskonektatutaPanela.sortuDeskonektatutaPanela());
-        }
-        if(propietatea.equals(MenuBarra.P_DESKONEKTATU)) {
-
         }
         if(propietatea.equals(MapaPanela.P_MAPA_NEGUTEGI_INFO)) {
             NegutegiInfoPanela negutegiInfoPanela = new NegutegiInfoPanela(this);
             if (tabPanela.getTabCount() == 1)
-                tabPanela.addTab(" NEGUTEGI ", negutegiInfoPanela.negutegiInfoPZentrala());
+                tabPanela.addTab(" NEGUTEGIA ", negutegiInfoPanela.negutegiInfoPZentrala());
         }
         if(propietatea.equals(MapaPanela.P_MAPA_NEGUTEGI_INFO_EXIT)) {
             if (tabPanela.getTabCount() > 1)

@@ -202,6 +202,15 @@ public class MenuBarra {
             if(testua.equals("About")) {
                 new AboutDialogoa(itxura);
             }
+
+            if(testua.equals("User")) {
+                JOptionPane.showMessageDialog(
+                    itxura,
+                    "Izena Ur\nAbizena Berraondo\nErabiltzailea UrBerraondo",
+                    "Erabiltzailea",
+                    JOptionPane.INFORMATION_MESSAGE
+                );
+            }
         }
     }
 

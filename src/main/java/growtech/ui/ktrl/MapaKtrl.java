@@ -35,7 +35,6 @@ public class MapaKtrl implements ListSelectionListener, ActionListener, ItemList
         if(mapaPanela.getNegutegiJL().getSelectedValue() != null) {
             mapaKudeatzailea.mapaHandituta();
             mapaPanela.getBotoia().setEnabled(true);
-            
         }
         if(mapaPanela.getNegutegiJL().getSelectedValue() == null) {
             mapaKudeatzailea.mapaPred();

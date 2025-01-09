@@ -69,7 +69,9 @@ public class Main {
         // AdminUserDialogoa adminUserDialogoa = new AdminUserDialogoa(null);
         // if(!adminUserDialogoa.isITXI_DA_X()) {
         // }
+        
         new ItxuraPrintzipala();
             
     }
+    
 }

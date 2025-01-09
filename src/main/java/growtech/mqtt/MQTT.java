@@ -10,23 +10,29 @@ import org.eclipse.paho.client.mqttv3.MqttSecurityException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import growtech.ui.ItxuraPrintzipala;
+import growtech.util.Grafikoa;
 import lombok.Getter;
 
 public class MQTT implements MqttCallback {
-    public static final String BROKER = "tcp://localhost:1883"; // localhost  192.168.1.4
+    public static final String BROKER = "tcp://localhost:1883"; // localhost  192.168.1.100
     public static final String CLENT_ID = "TemperatureSimulator";
     public static final int QoS = 2;
     
-    public static final String TOPIC_TEMPERATURE = "Sensor/Temperature";
+    public static final String TOPIC_TENPERATURA = "Tenperatura";
+    public static final String TOPIC_HEZETASUNA = "Hezetasuna";
     private final MqttClient client;
     private MqttConnectOptions connOpts;
-    private volatile double valueTemperature;
-    private ItxuraPrintzipala itxura;
     
+    private ItxuraPrintzipala itxura;
+
+    private volatile double valueTemperature;
+    private volatile double valueHezetasuna;
+
     private @Getter boolean konektatutaDago;
 
     public MQTT(String broker, String clientId) throws MqttException {
         this.valueTemperature = 0.0;
+        this.valueHezetasuna = 0.0;
         konektatutaDago = false;
 
         MemoryPersistence persistence = new MemoryPersistence();
@@ -57,8 +63,10 @@ public class MQTT implements MqttCallback {
     }
 
     public void klienteraSubskribatu() throws MqttException {
-        System.out.println("[MQTT] Subscribe " + TOPIC_TEMPERATURE);
-        client.subscribe(TOPIC_TEMPERATURE, QoS);
+        System.out.println("[MQTT] Subscribe " + TOPIC_TENPERATURA);
+        client.subscribe(TOPIC_TENPERATURA, QoS);
+        System.out.println("[MQTT] Subscribe " + TOPIC_HEZETASUNA);
+        client.subscribe(TOPIC_HEZETASUNA, QoS);
         System.out.println("[MQTT] Ready");
         konektatutaDago = true;
     }
@@ -80,6 +88,9 @@ public class MQTT implements MqttCallback {
         return this.valueTemperature;
     }
 
+    public double getHezetasuna() {
+        return this.valueHezetasuna;
+    }
   
 
     @Override
@@ -113,22 +124,20 @@ public class MQTT implements MqttCallback {
         String content = new String(message.getPayload());
 
         switch(topic) {
-            case TOPIC_TEMPERATURE:
+            case TOPIC_TENPERATURA:
                 this.valueTemperature = Double.parseDouble(content);
-                itxura.getZenbakia().setText(String.valueOf(valueTemperature));
+                MQTTDatuak.idatziJasotakoDatua(TOPIC_TENPERATURA, this.valueTemperature);
+                System.out.println(TOPIC_TENPERATURA + String.valueOf(valueTemperature));
+                break;
+            case TOPIC_HEZETASUNA:
+                this.valueHezetasuna = Double.parseDouble(content);
+                MQTTDatuak.idatziJasotakoDatua(TOPIC_HEZETASUNA, this.valueHezetasuna);
+                System.out.println(TOPIC_HEZETASUNA + String.valueOf(valueHezetasuna));
                 break;
             default:
                 break;
         }
 
-        
-        /*switch(topic) {
-            case TOPIC_TEMPERATURE:
-                this.valueTemperature = Double.parseDouble(content);
-                System.out.println("Temperatura: "+this.valueTemperature);
-                break;
-            default:
-                break;
-        }*/
+        Grafikoa.grafikoDatasetEzarri();
     }
 }
