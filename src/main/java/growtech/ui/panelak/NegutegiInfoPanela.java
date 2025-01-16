@@ -3,13 +3,15 @@ package growtech.ui.panelak;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.Date;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.Locale;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -19,8 +21,6 @@ import javax.swing.JSlider;
 import javax.swing.JSplitPane;
 import javax.swing.SwingConstants;
 
-import org.jdesktop.swingx.JXDatePicker;
-
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 import growtech.mqtt.MQTTDatuak;
@@ -28,49 +28,39 @@ import growtech.ui.ItxuraPrintzipala;
 import growtech.ui.ktrl.NegutegiInfoKtrl;
 import growtech.ui.modeloak.NegutegiInfoKudeatzailea;
 import growtech.util.Grafikoa;
-import growtech.util.IrudiaTestuFormatua;
-import lombok.Getter;
 
 public class NegutegiInfoPanela implements PropertyChangeListener {
-    private ItxuraPrintzipala itxuraPrintzipala;
     private NegutegiInfoKtrl negutegiInfoKtrl;
     private NegutegiInfoKudeatzailea negutegiInfoKudeatzailea;
 
+    private JLabel tenperatura;
+    private JLabel hezetasuna;
+
     private JButton onOffBotoia;
     private JSlider haizagailuaSlider;
-
+    private JLabel haizagailuaSVG;
 
     public NegutegiInfoPanela(ItxuraPrintzipala itxuraPrintzipala) {
-        this.itxuraPrintzipala = itxuraPrintzipala;
-        negutegiInfoKudeatzailea = new NegutegiInfoKudeatzailea(this);
+        negutegiInfoKudeatzailea = new NegutegiInfoKudeatzailea(this, itxuraPrintzipala);
         negutegiInfoKudeatzailea.addPropertyChangeListener(this);
         negutegiInfoKtrl = new NegutegiInfoKtrl(negutegiInfoKudeatzailea);
+        hasieratuTenpHezeBalioak();
     }
 
     public Component negutegiInfoPZentrala() {
-        JSplitPane panela = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, 
-        true, sortuEzkerrekoPanela(), sortuEskumakoPanela());
+        JSplitPane panela = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
+                true, sortuEzkerrekoPanela(), sortuEskumakoPanela());
 
         panela.setDividerLocation(500);
         panela.setDividerSize(10);
-        
-        /*dateChooserHasieratu();
-        JButton botoia = new JButton("Refresh");
-        botoia.setActionCommand("refresh");
-        botoia.addActionListener(negutegiInfoKtrl);
-        
-        barnePanela.add(dateChooser);
-        barnePanela.add(botoia);
-        barnePanela.add(Grafikoa.sortuTenpHezGrafikoa());
-        panela.add(barnePanela);*/
 
         return panela;
     }
-    
+
     private Component sortuEzkerrekoPanela() {
-        JSplitPane panela = new JSplitPane(JSplitPane.VERTICAL_SPLIT, 
-        true, sortuInfoTenperaturaHezetasunPanela(), sortuHaizagailuaPanela());
-        
+        JSplitPane panela = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+                true, sortuInfoTenperaturaHezetasunPanela(), sortuHaizagailuaPanela());
+
         panela.setDividerLocation(500);
         panela.setDividerSize(10);
 
@@ -78,8 +68,8 @@ public class NegutegiInfoPanela implements PropertyChangeListener {
     }
 
     private Component sortuInfoTenperaturaHezetasunPanela() {
-        JSplitPane panela = new JSplitPane(JSplitPane.VERTICAL_SPLIT, 
-        true, sortuInfoPanela(), sortuTenperaturaHezetasunPanela());
+        JSplitPane panela = new JSplitPane(JSplitPane.VERTICAL_SPLIT,
+                true, sortuInfoPanela(), sortuTenperaturaHezetasunPanela());
 
         panela.setDividerLocation(120);
         panela.setDividerSize(10);
@@ -91,7 +81,8 @@ public class NegutegiInfoPanela implements PropertyChangeListener {
         JPanel panela = new JPanel(new GridLayout(3, 1));
         JLabel herria = new JLabel("Herria: " + MapaPanela.AUKERATUTAKO_NEGUTEGIA.getHerria());
         JLabel lurraldea = new JLabel("Lurraldea: " + MapaPanela.AUKERATUTAKO_NEGUTEGIA.getLurraldea());
-        JLabel partzelaKop = new JLabel("Partzela kopurua: " + String.valueOf(MapaPanela.AUKERATUTAKO_NEGUTEGIA.getPartzelaKop()));
+        JLabel partzelaKop = new JLabel(
+                "Partzela kopurua: " + String.valueOf(MapaPanela.AUKERATUTAKO_NEGUTEGIA.getPartzelaKop()));
 
         herria.setFont(new Font("Arial", Font.BOLD, 18));
         herria.setForeground(Color.BLACK);
@@ -116,7 +107,7 @@ public class NegutegiInfoPanela implements PropertyChangeListener {
         JPanel ezkerPanela = new JPanel(new GridLayout(4, 1));
         JPanel eskumaPanela = new JPanel(new GridLayout(4, 1));
 
-        JLabel tenperatura = new JLabel(String.valueOf(MQTTDatuak.AZKEN_TENPERATURA) + "ºC");
+        // tenperatura = new JLabel(String.valueOf(MQTTDatuak.AZKEN_TENPERATURA) + "ºC");
         tenperatura.setFont(new Font("Arial", Font.BOLD, 50));
         tenperatura.setForeground(Color.BLACK);
         tenperatura.setHorizontalAlignment(SwingConstants.CENTER);
@@ -131,7 +122,7 @@ public class NegutegiInfoPanela implements PropertyChangeListener {
         ezkerPanela.add(tenperaturaIrudi);
         ezkerPanela.add(tenperaturaSlider);
 
-        JLabel hezetasuna = new JLabel(String.valueOf(MQTTDatuak.AZKEN_HEZETASUNA) + "%");
+        // hezetasuna = new JLabel(String.valueOf(MQTTDatuak.AZKEN_HEZETASUNA) + "%");
         hezetasuna.setFont(new Font("Arial", Font.BOLD, 50));
         hezetasuna.setForeground(Color.BLACK);
         hezetasuna.setHorizontalAlignment(SwingConstants.CENTER);
@@ -158,20 +149,31 @@ public class NegutegiInfoPanela implements PropertyChangeListener {
         JPanel panela = new JPanel(new GridLayout());
         JPanel ezkerPanela = new JPanel(new GridLayout(2, 1));
         JPanel eskumaPanela = new JPanel(new GridLayout(2, 1, 20, 20));
+        JPanel eskumaPanelaInformazioaHistoriala = new JPanel(new GridLayout(1, 2, 20, 20));
 
-        JLabel haizagailua = new JLabel(new FlatSVGIcon("svg/ventilatorOn.svg", 100, 100));
+        haizagailuaSVG = new JLabel(new FlatSVGIcon("svg/ventilatorOn.svg", 100, 100));
         haizagailuaSlider = new JSlider();
 
-        ezkerPanela.add(haizagailua);
+        ezkerPanela.add(haizagailuaSVG);
         ezkerPanela.add(haizagailuaSlider);
-        
+
         onOffBotoia = new JButton(new FlatSVGIcon("svg/on.svg", 40, 40));
         onOffBotoia.addActionListener(negutegiInfoKtrl);
         onOffBotoia.setActionCommand("onOffBotoia");
-        JButton historialaBotoia = new JButton(new FlatSVGIcon("svg/Historiala.svg", 40, 40)/* + "Historiala"*/);
+        JButton historialaBotoia = new JButton(new FlatSVGIcon("svg/Historiala.svg", 40, 40)/* + "Historiala" */);
+        historialaBotoia.setToolTipText("Historiala ikusi");
+        historialaBotoia.addActionListener(negutegiInfoKtrl);
+        historialaBotoia.setActionCommand("historialaBotoia");
+        JButton informazioBotoia = new JButton(new FlatSVGIcon("svg/info.svg", 40, 40));
+        informazioBotoia.setToolTipText("Informazioa");
+        informazioBotoia.addActionListener(negutegiInfoKtrl);
+        informazioBotoia.setActionCommand("informazioBotoia");
+
         eskumaPanela.setBorder(BorderFactory.createEmptyBorder(50, 20, 50, 20));
         eskumaPanela.add(onOffBotoia);
-        eskumaPanela.add(historialaBotoia);
+        eskumaPanelaInformazioaHistoriala.add(historialaBotoia);
+        eskumaPanelaInformazioaHistoriala.add(informazioBotoia);
+        eskumaPanela.add(eskumaPanelaInformazioaHistoriala);
 
         panela.add(ezkerPanela);
         panela.add(eskumaPanela);
@@ -185,15 +187,61 @@ public class NegutegiInfoPanela implements PropertyChangeListener {
         return panela;
     }
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        String propietatea = evt.getPropertyName();
-        
+    private void hasieratuTenpHezeBalioak() {
+        LocalDate data = LocalDate.now();
+        String pathTenp = MQTTDatuak.FITXERO_PATH + data + " Tenperatura.txt";
+        String pathHeze = MQTTDatuak.FITXERO_PATH + data + " Hezetasuna.txt";
 
-        if(propietatea.equals(NegutegiInfoKudeatzailea.P_ONOFF_BOTOIA)) {
-            boolean newValue = (boolean) evt.getNewValue();
-            haizagailuaSlider.setEnabled(newValue);
+        tenperatura = new JLabel(String.valueOf(MQTTDatuak.AZKEN_TENPERATURA) + "ºC");
+        hezetasuna = new JLabel(String.valueOf(MQTTDatuak.AZKEN_HEZETASUNA) + "%");
+
+        try (BufferedReader br = new BufferedReader(new FileReader(pathTenp))) {
+            String datua;
+            String azkenDatua = null;
+            while ((datua = br.readLine()) != null) {
+                azkenDatua = datua;
+            }
+            if (azkenDatua != null) {
+                double balioa = Double.parseDouble(azkenDatua.trim());
+                MQTTDatuak.AZKEN_TENPERATURA = Double.parseDouble(azkenDatua);
+                tenperatura.setText(String.format(Locale.FRANCE, "%.1fºC", balioa));
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        try (BufferedReader br = new BufferedReader(new FileReader(pathHeze))) {
+            String datua;
+            String azkenDatua = null;
+            while ((datua = br.readLine()) != null) {
+                azkenDatua = datua;
+            }
+            if (azkenDatua != null) {
+                double balioa = Double.parseDouble(azkenDatua.trim());
+                MQTTDatuak.AZKEN_HEZETASUNA = Double.parseDouble(azkenDatua);
+                hezetasuna.setText(String.format(Locale.FRANCE, "%.1f%%", balioa));
+            }
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
         }
     }
 
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+        String propietatea = evt.getPropertyName();
+
+        if (propietatea.equals(NegutegiInfoKudeatzailea.P_ONOFF_BOTOIA)) {
+            boolean newValue = (boolean) evt.getNewValue();
+            haizagailuaSlider.setEnabled(newValue);
+            if (newValue)
+                haizagailuaSVG.setIcon(new FlatSVGIcon("svg/ventilatorOn.svg", 100, 100));
+            else
+                haizagailuaSVG.setIcon(new FlatSVGIcon("svg/ventilatorOff.svg", 100, 100));
+            // haizagailuaSVG.revalidate();
+            // haizagailuaSVG.repaint();
+        }
+        if (propietatea.equals(NegutegiInfoKudeatzailea.P_TENP_HEZE_AKTUALIZATU)) {
+            tenperatura.setText(String.format(Locale.FRANCE, "%.1fºC", MQTTDatuak.AZKEN_TENPERATURA));
+            hezetasuna.setText(String.format(Locale.FRANCE, "%.1f%%", MQTTDatuak.AZKEN_HEZETASUNA));
+        }
+    }
 }

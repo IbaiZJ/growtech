@@ -1,6 +1,5 @@
 package growtech.util.negutegiKudeaketa;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +15,7 @@ public class Negutegia {
     private GeoPosition posizioa;
     private int partzelaKop;
     private List<Erabiltzailea> erabiltzaileak;
-    
+
     public Negutegia(String herria, String lurraldea, GeoPosition posizioa, int partzelaKop) {
         this.herria = herria;
         this.lurraldea = lurraldea;
@@ -34,8 +33,5 @@ public class Negutegia {
         return "Negutegia [lurraldea=" + lurraldea + ", herria=" + herria + ", posizioa=" + posizioa + ", partzelaKop="
                 + partzelaKop + ", erabiltzaileak=" + erabiltzaileak + "]";
     }
-
-
-    
 
 }

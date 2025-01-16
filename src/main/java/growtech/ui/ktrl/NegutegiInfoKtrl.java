@@ -17,6 +17,12 @@ public class NegutegiInfoKtrl implements ActionListener {
         if(e.getActionCommand().equals("onOffBotoia")) {
             negutegiInfoKudeatzailea.onOffBotoiaExekutatu();
         }
+        if(e.getActionCommand().equals("historialaBotoia")) {
+            negutegiInfoKudeatzailea.sortuHistorialTab();
+        }
+        if(e.getActionCommand().equals("informazioBotoia")) {
+            negutegiInfoKudeatzailea.sortuInformazioTab();
+        }
     }
 
 }

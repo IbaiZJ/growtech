@@ -1,5 +1,7 @@
 package growtech.mqtt;
 
+import java.time.LocalDate;
+
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -9,21 +11,21 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.MqttSecurityException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-import growtech.ui.ItxuraPrintzipala;
+import growtech.ui.modeloak.MapaKudeatzailea;
+import growtech.ui.modeloak.NegutegiInfoKudeatzailea;
 import growtech.util.Grafikoa;
 import lombok.Getter;
 
 public class MQTT implements MqttCallback {
-    public static final String BROKER = "tcp://localhost:1883"; // localhost  192.168.1.100
+    public static final String BROKER = "tcp://192.168.1.100:1883"; // localhost 192.168.1.100
     public static final String CLENT_ID = "TemperatureSimulator";
     public static final int QoS = 2;
-    
+
     public static final String TOPIC_TENPERATURA = "Tenperatura";
     public static final String TOPIC_HEZETASUNA = "Hezetasuna";
+    public static final String TOPIC_MOTOREA = "Motorea";
     private final MqttClient client;
     private MqttConnectOptions connOpts;
-    
-    private ItxuraPrintzipala itxura;
 
     private volatile double valueTemperature;
     private volatile double valueHezetasuna;
@@ -36,24 +38,25 @@ public class MQTT implements MqttCallback {
         konektatutaDago = false;
 
         MemoryPersistence persistence = new MemoryPersistence();
-        
+
         this.client = new MqttClient(broker, clientId, persistence);
         connOpts = new MqttConnectOptions();
         connOpts.setCleanSession(true);
         this.client.setCallback(this);
-        
-        /*System.out.println("[MQTT] Connecting to broker: " + broker);
-        this.client.connect(connOpts);
-        System.out.println("[MQTT] Connected");
-        System.out.println("[MQTT] Subscribe " + TOPIC_TEMPERATURE);
-        client.subscribe(TOPIC_TEMPERATURE, QoS);
-        System.out.println("[MQTT] Ready");*/
-        
+
+        /*
+         * System.out.println("[MQTT] Connecting to broker: " + broker);
+         * this.client.connect(connOpts);
+         * System.out.println("[MQTT] Connected");
+         * System.out.println("[MQTT] Subscribe " + TOPIC_TEMPERATURE);
+         * client.subscribe(TOPIC_TEMPERATURE, QoS);
+         * System.out.println("[MQTT] Ready");
+         */
+
     }
 
-    public MQTT(ItxuraPrintzipala itxura) throws MqttException {
+    public MQTT() throws MqttException {
         this(BROKER, CLENT_ID);
-        this.itxura = itxura;
     }
 
     public void klienteraKonektatu() throws MqttSecurityException, MqttException {
@@ -76,13 +79,11 @@ public class MQTT implements MqttCallback {
         konektatutaDago = false;
     }
 
-    void publish(String topic, String content) throws MqttException {
+    public void publish(String topic, String content) throws MqttException {
         MqttMessage message = new MqttMessage(content.getBytes());
         message.setQos(QoS);
         this.client.publish(topic, message);
     }
-
-   
 
     public double getTemperature() {
         return this.valueTemperature;
@@ -91,7 +92,6 @@ public class MQTT implements MqttCallback {
     public double getHezetasuna() {
         return this.valueHezetasuna;
     }
-  
 
     @Override
     public void connectionLost(Throwable cause) {
@@ -120,10 +120,10 @@ public class MQTT implements MqttCallback {
     public void messageArrived(String topic, MqttMessage message) throws MqttException {
         // Called when a message arrives from the server that matches any
         // subscription made by the client
-    
+
         String content = new String(message.getPayload());
 
-        switch(topic) {
+        switch (topic) {
             case TOPIC_TENPERATURA:
                 this.valueTemperature = Double.parseDouble(content);
                 MQTTDatuak.idatziJasotakoDatua(TOPIC_TENPERATURA, this.valueTemperature);
@@ -138,6 +138,9 @@ public class MQTT implements MqttCallback {
                 break;
         }
 
-        Grafikoa.grafikoDatasetEzarri();
+        Grafikoa.grafikoDatasetEzarri(String.valueOf(LocalDate.now()));
+        Grafikoa.grafikoDatasetHistorialEzarri(String.valueOf(LocalDate.now()));
+        NegutegiInfoKudeatzailea.negutegiTenpHezeAktualizatu();
+        MapaKudeatzailea.mapaTenpHezeAktualizatu();
     }
 }

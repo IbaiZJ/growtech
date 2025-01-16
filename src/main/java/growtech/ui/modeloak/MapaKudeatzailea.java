@@ -15,23 +15,28 @@ import growtech.util.filtro.FiltroSelektore;
 import growtech.util.negutegiKudeaketa.Negutegia;
 
 public class MapaKudeatzailea {
-    PropertyChangeSupport aldaketak;
+    private static PropertyChangeSupport aldaketak;
     private ItxuraPrintzipala itxuraPrintzipala;
     public final static String P_MAPA_HANDITUTA = "MAPAHANDITUTA";
     public final static String P_MAPA_NORMAL = "MAPANORMAL";
+    public final static String P_TENP_HEZE_AKTUALIZATU = "P_TENP_HEZE_AKTUALIZATU";
 
     public MapaKudeatzailea(ItxuraPrintzipala itxuraPrintzipala, MapaPanela mapaPanela) {
         aldaketak = new PropertyChangeSupport(mapaPanela);
         this.itxuraPrintzipala = itxuraPrintzipala;
     }
-    
+
     public void mapaHandituta() {
         aldaketak.firePropertyChange(P_MAPA_HANDITUTA, -1, null);
     }
 
-
     public void mapaPred() {
         aldaketak.firePropertyChange(P_MAPA_NORMAL, -1, null);
+    }
+
+    public static void mapaTenpHezeAktualizatu() {
+        if (aldaketak != null)
+            aldaketak.firePropertyChange(P_TENP_HEZE_AKTUALIZATU, null, null);
     }
 
     public String[] jasoAukerak(FiltroSelektore<Negutegia, String> selector, String mota) {
@@ -46,40 +51,40 @@ public class MapaKudeatzailea {
     }
 
     public Map<String, List<Negutegia>> taldekatu(FiltroSelektore<Negutegia, String> selector) {
-		Map<String, List<Negutegia>> agrupazioa = new HashMap<>();
-		for (Negutegia Negutegia : itxuraPrintzipala.getNegutegi()) {
-			String clave = selector.selektorea(Negutegia);
-			if (clave != null) {
-				List<Negutegia> prodZerrenda = agrupazioa.get(clave);
-				if (prodZerrenda == null) {
-					prodZerrenda = new ArrayList<>();
-				}
-				prodZerrenda.add(Negutegia);
-				agrupazioa.put(clave, prodZerrenda);
-			}
-		}
-		return agrupazioa;
-	}
+        Map<String, List<Negutegia>> agrupazioa = new HashMap<>();
+        for (Negutegia Negutegia : itxuraPrintzipala.getNegutegi()) {
+            String clave = selector.selektorea(Negutegia);
+            if (clave != null) {
+                List<Negutegia> prodZerrenda = agrupazioa.get(clave);
+                if (prodZerrenda == null) {
+                    prodZerrenda = new ArrayList<>();
+                }
+                prodZerrenda.add(Negutegia);
+                agrupazioa.put(clave, prodZerrenda);
+            }
+        }
+        return agrupazioa;
+    }
 
     public List<Negutegia> filtratu(FiltroSelektore<Negutegia, String> selector) {
-		List<Negutegia> taldea = new ArrayList<>();
-		for (Negutegia Negutegia : itxuraPrintzipala.getNegutegi()) {
-			if (selector.filtroa(Negutegia)) {
-				taldea.add(Negutegia);
-			}
-		}
-		return taldea;
-	}
+        List<Negutegia> taldea = new ArrayList<>();
+        for (Negutegia Negutegia : itxuraPrintzipala.getNegutegi()) {
+            if (selector.filtroa(Negutegia)) {
+                taldea.add(Negutegia);
+            }
+        }
+        return taldea;
+    }
 
-	public List<Negutegia> filtratu(FiltroSelektore<Negutegia, String> selector, List<Negutegia> bistaratzekoakList) {
-		List<Negutegia> Negutegiak = new ArrayList<>();
-		for (Negutegia Negutegia : bistaratzekoakList) {
-			if (selector.filtroa(Negutegia)) {
-				Negutegiak.add(Negutegia);
-			}
-		}
-		return Negutegiak;
-	}
+    public List<Negutegia> filtratu(FiltroSelektore<Negutegia, String> selector, List<Negutegia> bistaratzekoakList) {
+        List<Negutegia> Negutegiak = new ArrayList<>();
+        for (Negutegia Negutegia : bistaratzekoakList) {
+            if (selector.filtroa(Negutegia)) {
+                Negutegiak.add(Negutegia);
+            }
+        }
+        return Negutegiak;
+    }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
         aldaketak.addPropertyChangeListener(listener);

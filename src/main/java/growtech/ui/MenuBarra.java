@@ -17,19 +17,21 @@ import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
+import org.eclipse.paho.client.mqttv3.MqttException;
+
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 import growtech.mqtt.MQTT;
 import growtech.mqtt.dialog.KonektatuDialogoa;
-import growtech.theme.TemaKudeatzailea;
 import growtech.ui.dialog.AboutDialogoa;
+import growtech.ui.theme.TemaKudeatzailea;
 import lombok.Getter;
 
 public class MenuBarra {
     PropertyChangeSupport aldaketak;
     private @Getter NireAkzioa konektatu, deskonektatu, konekzioKonf;
     private NireAkzioa irten;
-    private NireAkzioa argia, iluna, koloreGlobala; 
+    private NireAkzioa argia, iluna, koloreGlobala;
     private NireAkzioa about;
     private @Getter NireAkzioa user;
     private ItxuraPrintzipala itxura;
@@ -59,9 +61,12 @@ public class MenuBarra {
     }
 
     private void hasieratuAkzioak() {
-        konektatu = new NireAkzioa("Konektatu", new FlatSVGIcon("svg/Konektatu.svg", 40, 40), "Konektatu", KeyEvent.VK_1);
-        deskonektatu = new NireAkzioa("Deskonektatu", new FlatSVGIcon("svg/Deskonektatu.svg", 40, 40), "Deskonektatu", KeyEvent.VK_2);
-        konekzioKonf = new NireAkzioa("Konekzio Konfigurazioa", new FlatSVGIcon("svg/KonekzioKonf.svg", 40, 40), "Konekzio Konfigurazioa", KeyEvent.VK_3); 
+        konektatu = new NireAkzioa("Konektatu", new FlatSVGIcon("svg/Konektatu.svg", 40, 40), "Konektatu",
+                KeyEvent.VK_1);
+        deskonektatu = new NireAkzioa("Deskonektatu", new FlatSVGIcon("svg/Deskonektatu.svg", 40, 40), "Deskonektatu",
+                KeyEvent.VK_2);
+        konekzioKonf = new NireAkzioa("Konekzio Konfigurazioa", new FlatSVGIcon("svg/KonekzioKonf.svg", 40, 40),
+                "Konekzio Konfigurazioa", KeyEvent.VK_3);
         irten = new NireAkzioa("Irten", null, null, KeyEvent.VK_2);
         deskonektatu.setEnabled(false);
 
@@ -73,7 +78,7 @@ public class MenuBarra {
 
         user = new NireAkzioa("User", new FlatSVGIcon("svg/User.svg", 40, 40), "Usuarioa", KeyEvent.VK_9);
     }
-    
+
     public JMenuBar sortuMenuBar() {
         JMenuBar barra = new JMenuBar();
 
@@ -132,12 +137,12 @@ public class MenuBarra {
 
         return laguntzaMenua;
     }
-    
+
     public void konektatuAkzioaEman() {
         new KonektatuDialogoa(itxura, mqtt);
         konektatu.setEnabled(false);
         deskonektatu.setEnabled(true);
-        
+
         aldaketak.firePropertyChange(P_KONEKTATU, -1, "konektatu");
     }
 
@@ -145,12 +150,12 @@ public class MenuBarra {
         try {
             mqtt.disconnect();
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(itxura, "Errore bat egon da\ndeskonektatzerakoan", 
-            "Errorea", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(itxura, "Errore bat egon da\ndeskonektatzerakoan",
+                    "Errorea", JOptionPane.ERROR_MESSAGE);
         }
         konektatu.setEnabled(true);
         deskonektatu.setEnabled(false);
-        
+
         aldaketak.firePropertyChange(P_DESKONEKTATU, -1, "deskonektatu");
     }
 
@@ -167,49 +172,56 @@ public class MenuBarra {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            if(testua.equals("Konektatu")) {
+            if (testua.equals("Konektatu")) {
                 konektatuAkzioaEman();
             }
-            if(testua.equals("Deskonektatu")) {
+            if (testua.equals("Deskonektatu")) {
                 deskonektatuAkzioaEman();
             }
-            if(testua.equals("Irten")) {
+            if (testua.equals("Konekzio Konfigurazioa")) {
+                /*try {
+                    mqtt.publish(MQTT.TOPIC_MOTOREA, "15");
+                } catch (MqttException e1) {
+                    e1.printStackTrace();
+                }*/
+            }
+            if (testua.equals("Irten")) {
                 try {
-                    if(mqtt.isKonektatutaDago()) mqtt.disconnect();
+                    if (mqtt.isKonektatutaDago())
+                        mqtt.disconnect();
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }
                 itxura.dispose();
             }
-            
-            if(testua.equals("Argia")) {
+
+            if (testua.equals("Argia")) {
                 TemaKudeatzailea.ezarriArgiaTema();
                 SwingUtilities.updateComponentTreeUI(itxura);
                 argi.setSelected(true);
                 ilun.setSelected(false);
             }
-            if(testua.equals("Iluna")) {
+            if (testua.equals("Iluna")) {
                 TemaKudeatzailea.ezarriIlunaTema();
                 SwingUtilities.updateComponentTreeUI(itxura);
                 argi.setSelected(false);
                 ilun.setSelected(true);
             }
-            if(testua.equals("Kolore Globala")) {
+            if (testua.equals("Kolore Globala")) {
                 Color kolore = JColorChooser.showDialog(itxura, "Aukeratu Kolorea", null);
                 TemaKudeatzailea.aktualizatuKoloreGlobala("#" + Integer.toHexString(kolore.getRGB()).substring(2));
             }
-            
-            if(testua.equals("About")) {
+
+            if (testua.equals("About")) {
                 new AboutDialogoa(itxura);
             }
 
-            if(testua.equals("User")) {
+            if (testua.equals("User")) {
                 JOptionPane.showMessageDialog(
-                    itxura,
-                    "Izena Ur\nAbizena Berraondo\nErabiltzailea UrBerraondo",
-                    "Erabiltzailea",
-                    JOptionPane.INFORMATION_MESSAGE
-                );
+                        itxura,
+                        "Izena Ur\nAbizena Berraondo\nErabiltzailea UrBerraondo",
+                        "Erabiltzailea",
+                        JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }

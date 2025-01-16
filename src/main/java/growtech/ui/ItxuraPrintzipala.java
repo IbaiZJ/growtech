@@ -28,13 +28,14 @@ import growtech.util.negutegiKudeaketa.NegutegiKudeaketa;
 import growtech.util.negutegiKudeaketa.Negutegia;
 import lombok.Getter;
 
-@Getter 
+@Getter
 public class ItxuraPrintzipala extends JFrame implements PropertyChangeListener {
     private MQTT mqtt;
     private MenuBarra menuBarra;
     private JTabbedPane tabPanela;
     private JLabel zenbakia;
     private List<Negutegia> negutegi;
+    
     private MapaPanela mapaPanela;
     private MapaKtrl mapaKtrl;
     private DeskonektatutaPanela deskonektatutaPanela;
@@ -42,33 +43,32 @@ public class ItxuraPrintzipala extends JFrame implements PropertyChangeListener 
     public ItxuraPrintzipala() {
         this.setTitle(AppKonfigurazioa.APP_IZENA);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        ImageIcon icon = new ImageIcon(getClass().getResource("/img/GrowTech.png")); 
+        ImageIcon icon = new ImageIcon(getClass().getResource("/img/GrowTech.png"));
         this.setIconImage(icon.getImage());
         this.setSize(AppKonfigurazioa.APP_WIDTH, AppKonfigurazioa.APP_HEIGHT);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+
         this.mapaPanela = new MapaPanela(this);
         this.mapaPanela.addPropertyChangeListener(this);
         mapaKtrl = mapaPanela.getMapaKtrl();
         mapaKtrl.addPropertyChangeListener(this);
         deskonektatutaPanela = new DeskonektatutaPanela();
-        
+
         try {
-            mqtt = new MQTT(this);
+            mqtt = new MQTT();
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
-        
-        
+
         menuBarra = new MenuBarra(this, mqtt);
         menuBarra.addPropertyChangeListener(this);
         tabPanela = new JTabbedPane();
         negutegi = new ArrayList<>();
         hasieratuNegutegiak();
-        this.setContentPane(sortuLeihoPanela()); 
+        this.setContentPane(sortuLeihoPanela());
         this.setJMenuBar(menuBarra.sortuMenuBar());
-        
+
         this.setVisible(true);
 
         menuBarra.konektatuAkzioaEman();
@@ -87,7 +87,7 @@ public class ItxuraPrintzipala extends JFrame implements PropertyChangeListener 
         JToolBar toolBar = new JToolBar();
         toolBar.setOrientation(JToolBar.VERTICAL);
         toolBar.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Color.GRAY));
-        
+
         toolBar.add(menuBarra.getKonektatu());
         toolBar.add(menuBarra.getDeskonektatu());
         toolBar.add(menuBarra.getKonekzioKonf());
@@ -103,30 +103,30 @@ public class ItxuraPrintzipala extends JFrame implements PropertyChangeListener 
         negutegiKudeaketa.hasieratuNegutegiak(negutegi);
     }
 
-
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String propietatea = evt.getPropertyName();
 
-        if(propietatea.equals(MenuBarra.P_KONEKTATU)) {
+        if (propietatea.equals(MenuBarra.P_KONEKTATU)) {
             tabPanela.removeAll();
             tabPanela.addTab(" MAPA ", mapaPanela.sortuMapaPanela());
         }
-        if(propietatea.equals(MenuBarra.P_DESKONEKTATU)) {
+        if (propietatea.equals(MenuBarra.P_DESKONEKTATU)) {
             tabPanela.removeAll();
             // tabPanela.setVisible(false);
             tabPanela.addTab(" KONEKTATU ", deskonektatutaPanela.sortuDeskonektatutaPanela());
         }
-        if(propietatea.equals(MapaPanela.P_MAPA_NEGUTEGI_INFO)) {
+        if (propietatea.equals(MapaPanela.P_MAPA_NEGUTEGI_INFO)) {
             NegutegiInfoPanela negutegiInfoPanela = new NegutegiInfoPanela(this);
             if (tabPanela.getTabCount() == 1)
                 tabPanela.addTab(" NEGUTEGIA ", negutegiInfoPanela.negutegiInfoPZentrala());
         }
-        if(propietatea.equals(MapaPanela.P_MAPA_NEGUTEGI_INFO_EXIT)) {
-            if (tabPanela.getTabCount() > 1)
+        if (propietatea.equals(MapaPanela.P_MAPA_NEGUTEGI_INFO_EXIT)) {
+            if (tabPanela.getTabCount() > 1) {
                 tabPanela.remove(1);
+            }
         }
-        if(propietatea.equals(MapaKtrl.P_MAPA_NEGUTEGI_INFO_CLICK)) {
+        if (propietatea.equals(MapaKtrl.P_MAPA_NEGUTEGI_INFO_CLICK)) {
             tabPanela.setSelectedIndex(1);
         }
     }

@@ -2,29 +2,35 @@ package growtech.ui.modeloak;
 
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
-import java.time.LocalDate;
-import java.util.Date;
 
-
+import growtech.ui.ItxuraPrintzipala;
+import growtech.ui.panelak.DatuHistorialPanela;
+import growtech.ui.panelak.InformazioPanela;
 import growtech.ui.panelak.NegutegiInfoPanela;
-import growtech.util.Grafikoa;
 
 public class NegutegiInfoKudeatzailea {
-    PropertyChangeSupport aldaketak;
+    private static PropertyChangeSupport aldaketak;
     public final static String P_ONOFF_BOTOIA = "PONOFFBOTOIA";
+    public final static String P_TENP_HEZE_AKTUALIZATU = "PTENPHEZEAKTUALIZATU";
     NegutegiInfoPanela negutegiInfoPanela;
+    private static boolean botoiBalorea = false;
+    private ItxuraPrintzipala itxuraPrintzipala;
 
-    static boolean botoiBalorea = false;
-
-    public NegutegiInfoKudeatzailea(NegutegiInfoPanela negutegiInfoPanela) {
+    public NegutegiInfoKudeatzailea(NegutegiInfoPanela negutegiInfoPanela, ItxuraPrintzipala itxuraPrintzipala) {
         aldaketak = new PropertyChangeSupport(negutegiInfoPanela);
+        this.itxuraPrintzipala = itxuraPrintzipala;
         this.negutegiInfoPanela = negutegiInfoPanela;    
     }
 
     public void onOffBotoiaExekutatu() {
-        aldaketak.firePropertyChange(P_ONOFF_BOTOIA, -1, botoiBalorea);
+        aldaketak.firePropertyChange(P_ONOFF_BOTOIA, null, botoiBalorea);
         if(botoiBalorea) botoiBalorea = false;
         else botoiBalorea = true;
+    }
+
+    public static void negutegiTenpHezeAktualizatu() {
+        if(aldaketak != null)
+            aldaketak.firePropertyChange(P_TENP_HEZE_AKTUALIZATU, null, null);
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -33,6 +39,22 @@ public class NegutegiInfoKudeatzailea {
 
     public void removePropertyChangeListener(PropertyChangeListener listener) {
         aldaketak.removePropertyChangeListener(listener);
+    }
+
+    public void sortuHistorialTab() {
+        DatuHistorialPanela datuHistorialPanela = new DatuHistorialPanela();
+        if(itxuraPrintzipala.getTabPanela().getTabCount() >= 2) {
+            itxuraPrintzipala.getTabPanela().addTab(" HISTORIALA ", datuHistorialPanela.historialPanelaSortu());
+        }
+        itxuraPrintzipala.getTabPanela().setSelectedIndex(2);
+    }
+
+    public void sortuInformazioTab() {
+        InformazioPanela informazioPanela = new InformazioPanela();
+        if(itxuraPrintzipala.getTabPanela().getTabCount() >= 2) {
+            itxuraPrintzipala.getTabPanela().addTab(" INFORMAZIOA ", informazioPanela.sortuInformazioPanela());
+        }
+        itxuraPrintzipala.getTabPanela().setSelectedIndex(2);
     }
 
 }

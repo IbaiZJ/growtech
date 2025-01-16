@@ -1,4 +1,4 @@
-package growtech.theme;
+package growtech.ui.theme;
 
 import java.util.Collections;
 
