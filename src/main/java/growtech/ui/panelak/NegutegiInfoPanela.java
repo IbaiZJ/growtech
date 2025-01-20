@@ -7,6 +7,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -30,6 +31,9 @@ import growtech.ui.modeloak.NegutegiInfoKudeatzailea;
 import growtech.util.Grafikoa;
 
 public class NegutegiInfoPanela implements PropertyChangeListener {
+    private static PropertyChangeSupport aldaketak;
+    public final static String P_HISTORIAL_PANELA = "P_HISTORIAL_PANELA";
+    public final static String P_INFORMAZIO_PANELA = "P_INFORMAZIO_PANELA";
     private NegutegiInfoKtrl negutegiInfoKtrl;
     private NegutegiInfoKudeatzailea negutegiInfoKudeatzailea;
 
@@ -41,7 +45,8 @@ public class NegutegiInfoPanela implements PropertyChangeListener {
     private JLabel haizagailuaSVG;
 
     public NegutegiInfoPanela(ItxuraPrintzipala itxuraPrintzipala) {
-        negutegiInfoKudeatzailea = new NegutegiInfoKudeatzailea(this, itxuraPrintzipala);
+        aldaketak = new PropertyChangeSupport(itxuraPrintzipala);
+        negutegiInfoKudeatzailea = new NegutegiInfoKudeatzailea(this);
         negutegiInfoKudeatzailea.addPropertyChangeListener(this);
         negutegiInfoKtrl = new NegutegiInfoKtrl(negutegiInfoKudeatzailea);
         hasieratuTenpHezeBalioak();
@@ -107,7 +112,8 @@ public class NegutegiInfoPanela implements PropertyChangeListener {
         JPanel ezkerPanela = new JPanel(new GridLayout(4, 1));
         JPanel eskumaPanela = new JPanel(new GridLayout(4, 1));
 
-        // tenperatura = new JLabel(String.valueOf(MQTTDatuak.AZKEN_TENPERATURA) + "ºC");
+        // tenperatura = new JLabel(String.valueOf(MQTTDatuak.AZKEN_TENPERATURA) +
+        // "ºC");
         tenperatura.setFont(new Font("Arial", Font.BOLD, 50));
         tenperatura.setForeground(Color.BLACK);
         tenperatura.setHorizontalAlignment(SwingConstants.CENTER);
@@ -137,8 +143,6 @@ public class NegutegiInfoPanela implements PropertyChangeListener {
         eskumaPanela.add(hezetasunIrudi);
         eskumaPanela.add(hezetasunSlider);
 
-        // JXDatePicker kaixo = new JXDatePicker();
-
         panela.add(ezkerPanela);
         panela.add(eskumaPanela);
 
@@ -151,8 +155,12 @@ public class NegutegiInfoPanela implements PropertyChangeListener {
         JPanel eskumaPanela = new JPanel(new GridLayout(2, 1, 20, 20));
         JPanel eskumaPanelaInformazioaHistoriala = new JPanel(new GridLayout(1, 2, 20, 20));
 
-        haizagailuaSVG = new JLabel(new FlatSVGIcon("svg/ventilatorOn.svg", 100, 100));
+        haizagailuaSVG = new JLabel(new FlatSVGIcon("svg/ventilatorOff.svg", 100, 100));
         haizagailuaSlider = new JSlider();
+        haizagailuaSlider.addChangeListener(negutegiInfoKtrl);
+        haizagailuaSlider.setName("haizagailuaSlider");
+        haizagailuaSlider.setEnabled(false);
+        haizagailuaSlider.setValue(0);
 
         ezkerPanela.add(haizagailuaSVG);
         ezkerPanela.add(haizagailuaSlider);
@@ -225,6 +233,14 @@ public class NegutegiInfoPanela implements PropertyChangeListener {
         }
     }
 
+    public void addPropertyChangeListener(PropertyChangeListener listener) {
+        aldaketak.addPropertyChangeListener(listener);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener listener) {
+        aldaketak.removePropertyChangeListener(listener);
+    }
+
     @Override
     public void propertyChange(PropertyChangeEvent evt) {
         String propietatea = evt.getPropertyName();
@@ -234,14 +250,22 @@ public class NegutegiInfoPanela implements PropertyChangeListener {
             haizagailuaSlider.setEnabled(newValue);
             if (newValue)
                 haizagailuaSVG.setIcon(new FlatSVGIcon("svg/ventilatorOn.svg", 100, 100));
-            else
+            else {
+                haizagailuaSlider.setValue(0);
                 haizagailuaSVG.setIcon(new FlatSVGIcon("svg/ventilatorOff.svg", 100, 100));
+            }
             // haizagailuaSVG.revalidate();
             // haizagailuaSVG.repaint();
         }
         if (propietatea.equals(NegutegiInfoKudeatzailea.P_TENP_HEZE_AKTUALIZATU)) {
             tenperatura.setText(String.format(Locale.FRANCE, "%.1fºC", MQTTDatuak.AZKEN_TENPERATURA));
             hezetasuna.setText(String.format(Locale.FRANCE, "%.1f%%", MQTTDatuak.AZKEN_HEZETASUNA));
+        }
+        if (propietatea.equals(NegutegiInfoKudeatzailea.P_HISTORIAL_PANELA)) {
+            aldaketak.firePropertyChange(P_HISTORIAL_PANELA, null, null);
+        }
+        if (propietatea.equals(NegutegiInfoKudeatzailea.P_INFORMAZIO_PANELA)) {
+            aldaketak.firePropertyChange(P_INFORMAZIO_PANELA, null, null);
         }
     }
 }

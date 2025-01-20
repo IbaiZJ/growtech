@@ -27,7 +27,7 @@ public class AboutDialogoa extends JDialog implements ActionListener {
 
     public AboutDialogoa(JFrame leihoa) {
         super(leihoa, "About", true);
-        this.setSize(250,270);
+        this.setSize(250,370);
         this.setLocationRelativeTo(null);
         this.setContentPane(sortuDialogoPanela());
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -45,12 +45,12 @@ public class AboutDialogoa extends JDialog implements ActionListener {
         topPanela.add(IrudiaTestuFormatua.sortuTestuaFormatuarekin(
             AppKonfigurazioa.APP_IZENA, new Font("Arial", Font.BOLD, 18), Color.BLACK));
 
-        JPanel centerPanela = new JPanel(new GridLayout(4, 1, 5, 5));
+        JPanel centerPanela = new JPanel(new GridLayout(9, 1, 5, 5));
         JLabel bertsioaLabel = new JLabel("Bertsioa: " + AppUtils.getAppBertsioa());
         JLabel javaRuntimeLabel = new JLabel("Java runtime: %s".formatted(Runtime.version()));
         JXHyperlink githubLinkLabel = new JXHyperlink();
         githubLinkLabel.setText(AppKonfigurazioa.GITHUB_URL);
-        JLabel copyrightLabel = new JLabel("© 2024-2025 MU");
+        JLabel copyrightLabel = new JLabel("© 2024-2025 MU\n");
 
         githubLinkLabel.addActionListener(this);
         githubLinkLabel.setFocusPainted(false);
@@ -60,6 +60,11 @@ public class AboutDialogoa extends JDialog implements ActionListener {
         centerPanela.add(javaRuntimeLabel);
         centerPanela.add(githubLinkLabel);
         centerPanela.add(copyrightLabel);
+        centerPanela.add(new JLabel(" ->Ibai Zorrilla"));
+        centerPanela.add(new JLabel(" ->Ibai Lazkano"));
+        centerPanela.add(new JLabel(" ->Ibai Ochoa de Echaguen"));
+        centerPanela.add(new JLabel(" ->Alex Zabaleta"));
+        centerPanela.add(new JLabel(" ->Mikel Alvarez"));
 
         JPanel botoiPanela = new JPanel(new FlowLayout(FlowLayout.CENTER));
         JButton botoia = new JButton("OK");

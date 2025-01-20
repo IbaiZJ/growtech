@@ -13,68 +13,62 @@
     </properties>
 
     <dependencies>
-        <dependency> 
+        <dependency> <!-- MQTT -->
             <groupId>org.eclipse.paho</groupId>
             <artifactId>org.eclipse.paho.client.mqttv3</artifactId>
             <version>1.2.5</version>
         </dependency>
 
-        <dependency>
+        <dependency> <!-- Grafikoentzako libreria -->
             <groupId>com.formdev</groupId>
             <artifactId>flatlaf</artifactId>
             <version>3.2</version>
         </dependency>
 
-        <dependency>
+        <dependency> <!-- Grafikoentzako libreria -->
             <groupId>com.formdev</groupId>
             <artifactId>flatlaf-extras</artifactId>
             <version>2.4</version>
         </dependency>
 
-        <dependency>
+        <dependency> <!-- Grafikoentzako libreria -->
             <groupId>org.swinglabs.swingx</groupId>
             <artifactId>swingx-all</artifactId>
             <version>1.6.5-1</version>
         </dependency>
 
-        <dependency>
+        <dependency> <!-- @Getters @Setters -->
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.28</version>
             <scope>provided</scope>
         </dependency>
 
-        <dependency>
+        <dependency> <!-- Mapa egiteko -->
             <groupId>org.jxmapviewer</groupId>
             <artifactId>jxmapviewer2</artifactId>
             <version>2.6</version>
         </dependency>
 
-        <dependency>
+        <dependency> <!-- Datuak erakusteko libreria grafikoa -->
             <groupId>org.jfree</groupId>
             <artifactId>jfreechart</artifactId>
             <version>1.5.3</version>
         </dependency>
 
-        <dependency>
+        <dependency> <!-- Usuarioen libreriak enkriptatzeko -->
             <groupId>org.mindrot</groupId>
             <artifactId>jbcrypt</artifactId>
             <version>0.4</version>
         </dependency>
 
-        <dependency>
+        <dependency> <!-- Usuarioen .json-ak gestionatzeko -->
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.15.0</version>
         </dependency>
 
-        <dependency>
-            <groupId>org.jfree</groupId>
-            <artifactId>jfreechart</artifactId>
-            <version>1.5.3</version>
-        </dependency>
-
-        <dependency>
+        <dependency> <!-- .md-ak renderizatzeko -->
             <groupId>com.vladsch.flexmark</groupId>
             <artifactId>flexmark-all</artifactId>
             <version>0.64.8</version>

@@ -2,6 +2,8 @@ package growtech.mqtt;
 
 import java.time.LocalDate;
 
+import javax.swing.JOptionPane;
+
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
 import org.eclipse.paho.client.mqttv3.MqttClient;
@@ -11,24 +13,26 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.MqttSecurityException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
-import growtech.ui.modeloak.MapaKudeatzailea;
+import growtech.ui.ItxuraPrintzipala;
+import growtech.ui.modeloak.MapaPanelaKudeatzailea;
 import growtech.ui.modeloak.NegutegiInfoKudeatzailea;
 import growtech.util.Grafikoa;
 import lombok.Getter;
 
 public class MQTT implements MqttCallback {
-    public static final String BROKER = "tcp://192.168.1.100:1883"; // localhost 192.168.1.100
+    public static String BROKER = "tcp://localhost:1883"; // localhost 192.168.1.100
     public static final String CLENT_ID = "TemperatureSimulator";
-    public static final int QoS = 2;
+    public static int QoS = 2;
 
     public static final String TOPIC_TENPERATURA = "Tenperatura";
     public static final String TOPIC_HEZETASUNA = "Hezetasuna";
     public static final String TOPIC_MOTOREA = "Motorea";
-    private final MqttClient client;
+    private static MqttClient client;
     private MqttConnectOptions connOpts;
 
     private volatile double valueTemperature;
     private volatile double valueHezetasuna;
+    private ItxuraPrintzipala itxuraPrintzipala;
 
     private @Getter boolean konektatutaDago;
 
@@ -39,10 +43,10 @@ public class MQTT implements MqttCallback {
 
         MemoryPersistence persistence = new MemoryPersistence();
 
-        this.client = new MqttClient(broker, clientId, persistence);
+        MQTT.client = new MqttClient(broker, clientId, persistence);
         connOpts = new MqttConnectOptions();
         connOpts.setCleanSession(true);
-        this.client.setCallback(this);
+        MQTT.client.setCallback(this);
 
         /*
          * System.out.println("[MQTT] Connecting to broker: " + broker);
@@ -55,13 +59,14 @@ public class MQTT implements MqttCallback {
 
     }
 
-    public MQTT() throws MqttException {
+    public MQTT(ItxuraPrintzipala itxuraPrintzipala) throws MqttException {
         this(BROKER, CLENT_ID);
+        this.itxuraPrintzipala = itxuraPrintzipala;
     }
 
     public void klienteraKonektatu() throws MqttSecurityException, MqttException {
         System.out.println("[MQTT] Connecting to broker: " + BROKER);
-        this.client.connect(connOpts);
+        MQTT.client.connect(connOpts);
         System.out.println("[MQTT] Connected");
     }
 
@@ -75,14 +80,14 @@ public class MQTT implements MqttCallback {
     }
 
     public void disconnect() throws MqttException {
-        this.client.disconnect();
+        MQTT.client.disconnect();
         konektatutaDago = false;
     }
 
-    public void publish(String topic, String content) throws MqttException {
+    public static void publish(String topic, String content) throws MqttException {
         MqttMessage message = new MqttMessage(content.getBytes());
         message.setQos(QoS);
-        this.client.publish(topic, message);
+        client.publish(topic, message);
     }
 
     public double getTemperature() {
@@ -99,7 +104,11 @@ public class MQTT implements MqttCallback {
         // An application may choose to implement reconnection
         // logic at this point. This sample simply exits.
         System.err.println("Connection to MQTT broker lost!" + cause);
-        System.exit(1);
+        itxuraPrintzipala.getMenuBarra().mqttLost();
+        JOptionPane.showMessageDialog(itxuraPrintzipala, "MQTT zerbitzua jausi egin da.", "MQTT Errorea",
+                JOptionPane.ERROR_MESSAGE);
+        // KonektatuDialogoa konektatuDialogoa = new
+        // KonektatuDialogoa(itxuraPrintzipala, itxuraPrintzipala.getMqtt());
     }
 
     @Override
@@ -141,6 +150,6 @@ public class MQTT implements MqttCallback {
         Grafikoa.grafikoDatasetEzarri(String.valueOf(LocalDate.now()));
         Grafikoa.grafikoDatasetHistorialEzarri(String.valueOf(LocalDate.now()));
         NegutegiInfoKudeatzailea.negutegiTenpHezeAktualizatu();
-        MapaKudeatzailea.mapaTenpHezeAktualizatu();
+        MapaPanelaKudeatzailea.mapaTenpHezeAktualizatu();
     }
 }

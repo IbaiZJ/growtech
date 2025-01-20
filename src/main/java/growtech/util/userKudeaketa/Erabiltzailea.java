@@ -3,7 +3,6 @@ package growtech.util.userKudeaketa;
 import java.util.ArrayList;
 import java.util.List;
 
-import growtech.util.negutegiKudeaketa.Negutegia;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,13 +13,13 @@ public class Erabiltzailea {
     private String abizena;
     private String erabiltzaile;
     private String pasahitza;
-    private String mota;
-    private List<Negutegia> negutegiak;
+    private ErabiltzaileMota mota;
+    private List<Integer> negutegiak;
 
     public Erabiltzailea() {
     }
 
-    public Erabiltzailea(String izena, String abizena, String erabiltzaile, String pasahitza, String mota) {
+    public Erabiltzailea(String izena, String abizena, String erabiltzaile, String pasahitza, ErabiltzaileMota mota) {
         this.izena = izena;
         this.abizena = abizena;
         this.erabiltzaile = erabiltzaile;
@@ -29,7 +28,7 @@ public class Erabiltzailea {
         negutegiak = new ArrayList<>();
     }
 
-    public void gehituNegutegia(Negutegia negutegia) {
+    public void gehituNegutegia(int negutegia) {
         negutegiak.add(negutegia);
     }
 
@@ -38,4 +37,5 @@ public class Erabiltzailea {
         return "Erabiltzailea [erabiltzaile=" + erabiltzaile + ", pasahitza=" + pasahitza + ", mota=" + mota + "]";
     }
 
+    
 }

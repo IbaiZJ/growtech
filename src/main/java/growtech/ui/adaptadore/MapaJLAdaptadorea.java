@@ -12,13 +12,13 @@ public class MapaJLAdaptadorea implements ListCellRenderer<Negutegia> {
             boolean isSelected, boolean cellHasFocus) {
         JPanel panela = new JPanel(new BorderLayout());
         panela.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        JLabel irudi = new JLabel(value.getHerria() + ", " + value.getLurraldea());
-        irudi.setFont(new Font(null));
-        irudi.setForeground(Color.BLACK);
+        JLabel testua = new JLabel(value.getHerria() + ", " + value.getLurraldea());
+        testua.setFont(new Font(null));
+        testua.setForeground(Color.BLACK);
 
         if(isSelected) panela.setBackground(Color.LIGHT_GRAY);
             
-        panela.add(irudi);
+        panela.add(testua);
 
         return panela;
     }

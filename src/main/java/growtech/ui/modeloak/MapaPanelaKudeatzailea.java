@@ -14,14 +14,14 @@ import growtech.ui.panelak.MapaPanela;
 import growtech.util.filtro.FiltroSelektore;
 import growtech.util.negutegiKudeaketa.Negutegia;
 
-public class MapaKudeatzailea {
+public class MapaPanelaKudeatzailea {
     private static PropertyChangeSupport aldaketak;
     private ItxuraPrintzipala itxuraPrintzipala;
     public final static String P_MAPA_HANDITUTA = "MAPAHANDITUTA";
     public final static String P_MAPA_NORMAL = "MAPANORMAL";
     public final static String P_TENP_HEZE_AKTUALIZATU = "P_TENP_HEZE_AKTUALIZATU";
 
-    public MapaKudeatzailea(ItxuraPrintzipala itxuraPrintzipala, MapaPanela mapaPanela) {
+    public MapaPanelaKudeatzailea(ItxuraPrintzipala itxuraPrintzipala, MapaPanela mapaPanela) {
         aldaketak = new PropertyChangeSupport(mapaPanela);
         this.itxuraPrintzipala = itxuraPrintzipala;
     }

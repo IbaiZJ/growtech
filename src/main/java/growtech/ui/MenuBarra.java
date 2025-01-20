@@ -17,14 +17,18 @@ import javax.swing.JMenuBar;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 
-import org.eclipse.paho.client.mqttv3.MqttException;
-
 import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 import growtech.mqtt.MQTT;
 import growtech.mqtt.dialog.KonektatuDialogoa;
 import growtech.ui.dialog.AboutDialogoa;
+import growtech.ui.dialog.ErabiltzaileaSortuDialogoa;
+import growtech.ui.dialog.ErabiltzaileakEzabatuDialogoa;
+import growtech.ui.dialog.KonexioDialogoa;
+import growtech.ui.dialog.MapaKonfDialogoa;
 import growtech.ui.theme.TemaKudeatzailea;
+import growtech.util.userKudeaketa.ErabiltzaileKudeaketa;
+import growtech.util.userKudeaketa.ErabiltzaileMota;
 import lombok.Getter;
 
 public class MenuBarra {
@@ -33,7 +37,9 @@ public class MenuBarra {
     private NireAkzioa irten;
     private NireAkzioa argia, iluna, koloreGlobala;
     private NireAkzioa about;
-    private @Getter NireAkzioa user;
+    private @Getter NireAkzioa user, userGehitu, userKendu;
+    private @Getter NireAkzioa mapa, zoomHanditu, zoomTxikitu;
+    private @Getter NireAkzioa dataKendu, dataGehitu;
     private ItxuraPrintzipala itxura;
     private MQTT mqtt;
 
@@ -69,14 +75,25 @@ public class MenuBarra {
                 "Konekzio Konfigurazioa", KeyEvent.VK_3);
         irten = new NireAkzioa("Irten", null, null, KeyEvent.VK_2);
         deskonektatu.setEnabled(false);
-
         argia = new NireAkzioa("Argia", null, null, KeyEvent.VK_1);
         iluna = new NireAkzioa("Iluna", null, null, KeyEvent.VK_2);
         koloreGlobala = new NireAkzioa("Kolore Globala", null, null, KeyEvent.VK_3);
-
         about = new NireAkzioa("About", null, null, KeyEvent.VK_1);
-
-        user = new NireAkzioa("User", new FlatSVGIcon("svg/User.svg", 40, 40), "Usuarioa", KeyEvent.VK_9);
+        user = new NireAkzioa("Erabiltzailea", new FlatSVGIcon("svg/User.svg", 40, 40), "Usuarioa", KeyEvent.VK_9);
+        userGehitu = new NireAkzioa("Erabiltzailea Gehitu", new FlatSVGIcon("svg/user-plus.svg", 40, 40),
+                "Usuarioa berria sortu", KeyEvent.VK_8);
+        userKendu = new NireAkzioa("Erabiltzailea Kendu", new FlatSVGIcon("svg/user-minus.svg", 40, 40),
+                "Usuarioak ezabatu", KeyEvent.VK_7);
+        mapa = new NireAkzioa("Mapa konfiguratu", new FlatSVGIcon("svg/mapa.svg", 40, 40),
+                "Mapa konfiguratu", KeyEvent.VK_6);
+        zoomHanditu = new NireAkzioa("Zoom Handitu", new FlatSVGIcon("svg/zoomHanditu.svg", 40, 40),
+                "Zoom Handitu", null);
+        zoomTxikitu = new NireAkzioa("Zoom Txikitu", new FlatSVGIcon("svg/zoomTxikitu.svg", 40, 40),
+                "Mapa Txikitu", null);
+        dataKendu = new NireAkzioa("Data Atzera", new FlatSVGIcon("svg/dataAtzera.svg", 40, 40),
+                "Data Atzera", null);
+        dataGehitu = new NireAkzioa("Data Aurrera", new FlatSVGIcon("svg/dataAurrera.svg", 40, 40),
+                "Data Aurrera", null);
     }
 
     public JMenuBar sortuMenuBar() {
@@ -84,6 +101,8 @@ public class MenuBarra {
 
         barra.add(sortuArtxiboMenua());
         barra.add(sortuItxuraMenua());
+        if (ErabiltzaileKudeaketa.ERABILTZAILEA.getMota() == ErabiltzaileMota.ADMIN)
+            barra.add(sortuErabiltzaileMenua());
         barra.add(sortuLaguntzaMenua());
         barra.add(Box.createHorizontalGlue());
 
@@ -128,6 +147,17 @@ public class MenuBarra {
         return itxuraMenua;
     }
 
+    public JMenu sortuErabiltzaileMenua() {
+        JMenu erabiltzaileMenua = new JMenu("Erabiltzaileak");
+
+        erabiltzaileMenua.setMnemonic(KeyEvent.VK_F2);
+        erabiltzaileMenua.add(user);
+        erabiltzaileMenua.add(userGehitu);
+        erabiltzaileMenua.add(userKendu);
+
+        return erabiltzaileMenua;
+    }
+
     public JMenu sortuLaguntzaMenua() {
         JMenu laguntzaMenua = new JMenu("Laguntza");
 
@@ -159,7 +189,13 @@ public class MenuBarra {
         aldaketak.firePropertyChange(P_DESKONEKTATU, -1, "deskonektatu");
     }
 
+    public void mqttLost() {
+        konektatu.setEnabled(true);
+        deskonektatu.setEnabled(false);
+    }
+
     private class NireAkzioa extends AbstractAction {
+        @Getter
         String testua;
 
         public NireAkzioa(String texto, Icon imagen, String descrip, Integer nemonic) {
@@ -179,11 +215,8 @@ public class MenuBarra {
                 deskonektatuAkzioaEman();
             }
             if (testua.equals("Konekzio Konfigurazioa")) {
-                /*try {
-                    mqtt.publish(MQTT.TOPIC_MOTOREA, "15");
-                } catch (MqttException e1) {
-                    e1.printStackTrace();
-                }*/
+                @SuppressWarnings("unused")
+                KonexioDialogoa konexioDialogoa = new KonexioDialogoa(itxura);
             }
             if (testua.equals("Irten")) {
                 try {
@@ -194,7 +227,6 @@ public class MenuBarra {
                 }
                 itxura.dispose();
             }
-
             if (testua.equals("Argia")) {
                 TemaKudeatzailea.ezarriArgiaTema();
                 SwingUtilities.updateComponentTreeUI(itxura);
@@ -211,17 +243,35 @@ public class MenuBarra {
                 Color kolore = JColorChooser.showDialog(itxura, "Aukeratu Kolorea", null);
                 TemaKudeatzailea.aktualizatuKoloreGlobala("#" + Integer.toHexString(kolore.getRGB()).substring(2));
             }
-
             if (testua.equals("About")) {
                 new AboutDialogoa(itxura);
             }
-
-            if (testua.equals("User")) {
+            if (testua.equals("Erabiltzailea")) {
                 JOptionPane.showMessageDialog(
                         itxura,
-                        "Izena Ur\nAbizena Berraondo\nErabiltzailea UrBerraondo",
+                        "Izena " + ErabiltzaileKudeaketa.ERABILTZAILEA.getIzena()
+                                + "\nAbizena " + ErabiltzaileKudeaketa.ERABILTZAILEA.getAbizena()
+                                + "\nErabiltzailea " + ErabiltzaileKudeaketa.ERABILTZAILEA.getErabiltzaile(),
                         "Erabiltzailea",
                         JOptionPane.INFORMATION_MESSAGE);
+            }
+            if (testua.equals("Erabiltzailea Gehitu")) {
+                @SuppressWarnings("unused")
+                ErabiltzaileaSortuDialogoa erabiltzaileaSortuDialogoa = new ErabiltzaileaSortuDialogoa(itxura);
+            }
+            if (testua.equals("Erabiltzailea Kendu")) {
+                @SuppressWarnings("unused")
+                ErabiltzaileakEzabatuDialogoa erabiltzaileakEzabatuDialogoa = new ErabiltzaileakEzabatuDialogoa(itxura);
+            }
+            if (testua.equals("Mapa konfiguratu")) {
+                @SuppressWarnings("unused")
+                MapaKonfDialogoa mapaKonfDialogoa = new MapaKonfDialogoa(itxura);
+            }
+            if (testua.equals("Zoom Handitu")) {
+                itxura.getMapaPanela().zoomHanditu();
+            }
+            if (testua.equals("Zoom Txikitu")) {
+                itxura.getMapaPanela().zoomTxikitu();
             }
         }
     }

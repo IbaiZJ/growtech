@@ -10,13 +10,15 @@ import lombok.Getter;
 
 @Getter
 public class Negutegia {
+    private int id;
     private String lurraldea;
     private String herria;
     private GeoPosition posizioa;
     private int partzelaKop;
     private List<Erabiltzailea> erabiltzaileak;
 
-    public Negutegia(String herria, String lurraldea, GeoPosition posizioa, int partzelaKop) {
+    public Negutegia(int id, String herria, String lurraldea, GeoPosition posizioa, int partzelaKop) {
+        this.id = id;
         this.herria = herria;
         this.lurraldea = lurraldea;
         this.posizioa = posizioa;

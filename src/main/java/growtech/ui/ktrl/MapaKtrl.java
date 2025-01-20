@@ -11,18 +11,18 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import growtech.ui.ItxuraPrintzipala;
-import growtech.ui.modeloak.MapaKudeatzailea;
+import growtech.ui.modeloak.MapaPanelaKudeatzailea;
 import growtech.ui.panelak.MapaPanela;
 import growtech.util.AppUtils;
 import growtech.util.negutegiKudeaketa.Negutegia;
 
 public class MapaKtrl implements ListSelectionListener, ActionListener, ItemListener {
     private MapaPanela mapaPanela;
-    private MapaKudeatzailea mapaKudeatzailea;
+    private MapaPanelaKudeatzailea mapaKudeatzailea;
     public final static String P_MAPA_NEGUTEGI_INFO_CLICK = "NEGUTEGIINFOCLICK";
     PropertyChangeSupport aldaketak;
 
-    public MapaKtrl(MapaPanela mapaPanela, MapaKudeatzailea mapaKudeatzailea, ItxuraPrintzipala itxuraPrintzipala) {
+    public MapaKtrl(MapaPanela mapaPanela, MapaPanelaKudeatzailea mapaKudeatzailea, ItxuraPrintzipala itxuraPrintzipala) {
         this.mapaPanela = mapaPanela;
         this.mapaKudeatzailea = mapaKudeatzailea;
         aldaketak = new PropertyChangeSupport(itxuraPrintzipala);

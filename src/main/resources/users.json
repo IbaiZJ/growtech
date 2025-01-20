@@ -7,16 +7,37 @@
   "negutegiak" : null
 }, {
   "izena" : "Ibai",
-  "abizena" : "Lazkano",
-  "erabiltzaile" : "ilazkano",
-  "pasahitza" : "$2a$10$TB0JT6UjzZiJSHdKMP1PWu8Sfng5BnTiAFFcbiUVW/8NTrpu5H2mi",
+  "abizena" : "Zorrilla",
+  "erabiltzaile" : "izorrilla",
+  "pasahitza" : "$2a$10$djIVqr8JuEJdd21YbEX6nOaxL99IHrXxLJHJJ1zCfKvAGyXx697Jq",
   "mota" : "USER",
-  "negutegiak" : null
+  "negutegiak" : [ 5 ]
+}, {
+  "izena" : "a",
+  "abizena" : "a",
+  "erabiltzaile" : "a",
+  "pasahitza" : "$2a$10$K6M8WVSrm.aVdaMlIgudae5qB/MwNBhb0FA6CTxy70xFgEsXdM62u",
+  "mota" : "ADMIN",
+  "negutegiak" : [ ]
 }, {
   "izena" : "Alex",
   "abizena" : "Zabaleta",
-  "erabiltzaile" : "azabaleta",
-  "pasahitza" : "$2a$10$//zSITQHPyY2W9a4jV9hmemFVTTL9Zow/jMILxKF1alLKxO136h/C",
+  "erabiltzaile" : "alexz",
+  "pasahitza" : "$2a$10$lVk2L2.IBpoSjEI24ve5f.5bsLIVelLmcKxWv86RiR6lJLv2SFeiO",
   "mota" : "USER",
-  "negutegiak" : [ ]
+  "negutegiak" : [ 1, 3 ]
+}, {
+  "izena" : "Ibai",
+  "abizena" : "Lazkano",
+  "erabiltzaile" : "ilazkano",
+  "pasahitza" : "$2a$10$.hUvoCyYakEJoTqQlJlq2.lF6aec6KPvot2t45lb1tYV//u3O3K2.",
+  "mota" : "USER",
+  "negutegiak" : [ 1 ]
+}, {
+  "izena" : "Aimar",
+  "abizena" : "Kobeaga",
+  "erabiltzaile" : "fox",
+  "pasahitza" : "$2a$10$QZh5Vk9yP56X5XuniAxZm.aXAJhENct.zI8FipgsRpOR2VA9Jq/KO",
+  "mota" : "USER",
+  "negutegiak" : [ 1, 2, 4 ]
 } ]

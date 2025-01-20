@@ -3,34 +3,44 @@ package growtech.ui.modeloak;
 import java.beans.PropertyChangeListener;
 import java.beans.PropertyChangeSupport;
 
-import growtech.ui.ItxuraPrintzipala;
-import growtech.ui.panelak.DatuHistorialPanela;
-import growtech.ui.panelak.InformazioPanela;
+import org.eclipse.paho.client.mqttv3.MqttException;
+
+import growtech.mqtt.MQTT;
 import growtech.ui.panelak.NegutegiInfoPanela;
 
 public class NegutegiInfoKudeatzailea {
     private static PropertyChangeSupport aldaketak;
     public final static String P_ONOFF_BOTOIA = "PONOFFBOTOIA";
     public final static String P_TENP_HEZE_AKTUALIZATU = "PTENPHEZEAKTUALIZATU";
-    NegutegiInfoPanela negutegiInfoPanela;
-    private static boolean botoiBalorea = false;
-    private ItxuraPrintzipala itxuraPrintzipala;
+    public final static String P_HISTORIAL_PANELA = "P_HISTORIAL_PANELA";
+    public final static String P_INFORMAZIO_PANELA = "P_INFORMAZIO_PANELA";
+    private static boolean botoiBalorea = true;
 
-    public NegutegiInfoKudeatzailea(NegutegiInfoPanela negutegiInfoPanela, ItxuraPrintzipala itxuraPrintzipala) {
+    public NegutegiInfoKudeatzailea(NegutegiInfoPanela negutegiInfoPanela) {
         aldaketak = new PropertyChangeSupport(negutegiInfoPanela);
-        this.itxuraPrintzipala = itxuraPrintzipala;
-        this.negutegiInfoPanela = negutegiInfoPanela;    
     }
 
     public void onOffBotoiaExekutatu() {
         aldaketak.firePropertyChange(P_ONOFF_BOTOIA, null, botoiBalorea);
-        if(botoiBalorea) botoiBalorea = false;
-        else botoiBalorea = true;
+        if (botoiBalorea)
+            botoiBalorea = false;
+        else
+            botoiBalorea = true;
     }
 
     public static void negutegiTenpHezeAktualizatu() {
-        if(aldaketak != null)
+        if (aldaketak != null)
             aldaketak.firePropertyChange(P_TENP_HEZE_AKTUALIZATU, null, null);
+    }
+
+    public void haizagailuSliderKudeatu(int balioa) {
+        // System.out.println(balioa);
+        // balioa 0 - 100
+        try {
+            MQTT.publish(MQTT.TOPIC_MOTOREA, String.valueOf(balioa));
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
     }
 
     public void addPropertyChangeListener(PropertyChangeListener listener) {
@@ -42,19 +52,11 @@ public class NegutegiInfoKudeatzailea {
     }
 
     public void sortuHistorialTab() {
-        DatuHistorialPanela datuHistorialPanela = new DatuHistorialPanela();
-        if(itxuraPrintzipala.getTabPanela().getTabCount() >= 2) {
-            itxuraPrintzipala.getTabPanela().addTab(" HISTORIALA ", datuHistorialPanela.historialPanelaSortu());
-        }
-        itxuraPrintzipala.getTabPanela().setSelectedIndex(2);
+        aldaketak.firePropertyChange(P_HISTORIAL_PANELA, null, null);
     }
 
     public void sortuInformazioTab() {
-        InformazioPanela informazioPanela = new InformazioPanela();
-        if(itxuraPrintzipala.getTabPanela().getTabCount() >= 2) {
-            itxuraPrintzipala.getTabPanela().addTab(" INFORMAZIOA ", informazioPanela.sortuInformazioPanela());
-        }
-        itxuraPrintzipala.getTabPanela().setSelectedIndex(2);
+        aldaketak.firePropertyChange(P_INFORMAZIO_PANELA, null, null);
     }
 
 }

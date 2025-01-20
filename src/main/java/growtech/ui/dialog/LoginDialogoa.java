@@ -20,45 +20,46 @@ import javax.swing.JTextField;
 
 import growtech.util.IrudiaTestuFormatua;
 import growtech.util.userKudeaketa.ErabiltzaileKudeaketa;
+import growtech.util.userKudeaketa.Erabiltzailea;
 import lombok.Getter;
 
-public class AdminUserDialogoa extends JDialog implements ActionListener {
+public class LoginDialogoa extends JDialog implements ActionListener {
     public @Getter boolean ITXI_DA_X = true;
     JTextField erabiltzailea;
     JPasswordField pasahitza;
     JLabel alerta;
 
-    public AdminUserDialogoa(JFrame leihoa) {
+    public LoginDialogoa(JFrame leihoa) {
         super(leihoa, "Grow Tech", true);
-        this.setSize(300,400);
-        ImageIcon icon = new ImageIcon(getClass().getResource("/img/GrowTech.png")); 
+        this.setSize(300, 400);
+        ImageIcon icon = new ImageIcon(getClass().getResource("/img/GrowTech.png"));
         this.setIconImage(icon.getImage());
         this.setLocationRelativeTo(null);
         this.setContentPane(sortuDialogoPanela());
-		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-		this.setVisible(true);
+        this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        this.setVisible(true);
     }
 
     private Container sortuDialogoPanela() {
-        JPanel panela = new JPanel(new GridLayout(2,1));
+        JPanel panela = new JPanel(new GridLayout(2, 1));
         panela.setBorder(BorderFactory.createEmptyBorder(20, 50, 20, 50));
-        JPanel barnePanela = new JPanel(new GridLayout(6,1));
+        JPanel barnePanela = new JPanel(new GridLayout(6, 1));
 
         JLabel irudi = new JLabel(IrudiaTestuFormatua.irudiaEskalatu(
-            getClass().getResource("/img/GrowTech.png"), 100,100));
+                getClass().getResource("/img/GrowTech.png"), 100, 100));
 
         erabiltzailea = new JTextField();
         pasahitza = new JPasswordField();
         pasahitza.addActionListener(this);
         alerta = new JLabel();
-        
+
         JButton botoia = new JButton("OK");
         botoia.setPreferredSize(new Dimension(50, 10));
         botoia.addActionListener(this);
-        
+
         erabiltzailea.setToolTipText("Erabiltzailea");
         pasahitza.setToolTipText("Pasahitza");
-        
+
         barnePanela.add(new JLabel("Erabiltzailea"));
         barnePanela.add(erabiltzailea);
         barnePanela.add(new JLabel("Pasahitza"));
@@ -71,14 +72,16 @@ public class AdminUserDialogoa extends JDialog implements ActionListener {
 
         return panela;
     }
-
+    
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(ErabiltzaileKudeaketa.bilatuErabiltzailea(erabiltzailea.getText(), String.valueOf(pasahitza.getPassword()))) {
+        Erabiltzailea erabiltzaileBerria = ErabiltzaileKudeaketa.bilatuErabiltzailea(erabiltzailea.getText(),
+                String.valueOf(pasahitza.getPassword()));
+        if (erabiltzaileBerria != null) {
             ITXI_DA_X = false;
+            ErabiltzaileKudeaketa.ERABILTZAILEA = erabiltzaileBerria;
             this.dispose();
-        }
-        else {
+        } else {
             alerta.setFont(new Font("Arial", Font.BOLD, 9));
             alerta.setText("*Erabiltzailea edo pasahitza ez da zuzena");
             alerta.setForeground(Color.red);
@@ -88,4 +91,3 @@ public class AdminUserDialogoa extends JDialog implements ActionListener {
         }
     }
 }
-

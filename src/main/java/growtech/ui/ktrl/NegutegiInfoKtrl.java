@@ -3,9 +3,13 @@ package growtech.ui.ktrl;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import growtech.ui.modeloak.NegutegiInfoKudeatzailea;
 
-public class NegutegiInfoKtrl implements ActionListener {
+public class NegutegiInfoKtrl implements ActionListener, ChangeListener {
     private NegutegiInfoKudeatzailea negutegiInfoKudeatzailea;
 
     public NegutegiInfoKtrl(NegutegiInfoKudeatzailea negutegiInfoKudeatzailea) {
@@ -25,4 +29,14 @@ public class NegutegiInfoKtrl implements ActionListener {
         }
     }
 
+    @Override
+    public void stateChanged(ChangeEvent e) {
+        if(e.getSource() instanceof JSlider) {
+            JSlider slider = (JSlider) e.getSource();
+
+            if(slider.getName().equals("haizagailuaSlider")) {
+                negutegiInfoKudeatzailea.haizagailuSliderKudeatu(slider.getValue());
+            }
+        }
+    }
 }
