@@ -15,7 +15,7 @@ import growtech.ui.ItxuraPrintzipala;
 import growtech.ui.dialog.LoginDialogoa;
 import growtech.ui.theme.TemaKudeatzailea;
 
-public class Main {
+public class GrowTech {
 
     public static void main(String[] args) {
 

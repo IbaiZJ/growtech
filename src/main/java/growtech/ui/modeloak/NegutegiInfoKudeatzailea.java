@@ -39,6 +39,7 @@ public class NegutegiInfoKudeatzailea {
         try {
             MQTT.publish(MQTT.TOPIC_MOTOREA, String.valueOf(balioa));
         } catch (MqttException e) {
+            System.err.println("Errorea Motore datua bidaltzerakoan");
             e.printStackTrace();
         }
     }

@@ -14,14 +14,15 @@ import growtech.ui.panelak.MapaPanela;
 import growtech.util.filtro.FiltroSelektore;
 import growtech.util.negutegiKudeaketa.Negutegia;
 
-public class MapaPanelaKudeatzailea {
+public class MapaKudeatzailea {
     private static PropertyChangeSupport aldaketak;
     private ItxuraPrintzipala itxuraPrintzipala;
     public final static String P_MAPA_HANDITUTA = "MAPAHANDITUTA";
     public final static String P_MAPA_NORMAL = "MAPANORMAL";
+    public final static String P_MAPA_NEGUTEGI_INFO_CLICK = "NEGUTEGIINFOCLICK";
     public final static String P_TENP_HEZE_AKTUALIZATU = "P_TENP_HEZE_AKTUALIZATU";
 
-    public MapaPanelaKudeatzailea(ItxuraPrintzipala itxuraPrintzipala, MapaPanela mapaPanela) {
+    public MapaKudeatzailea(ItxuraPrintzipala itxuraPrintzipala, MapaPanela mapaPanela) {
         aldaketak = new PropertyChangeSupport(mapaPanela);
         this.itxuraPrintzipala = itxuraPrintzipala;
     }
@@ -37,6 +38,10 @@ public class MapaPanelaKudeatzailea {
     public static void mapaTenpHezeAktualizatu() {
         if (aldaketak != null)
             aldaketak.firePropertyChange(P_TENP_HEZE_AKTUALIZATU, null, null);
+    }
+
+    public void mapatikNegutegiraMugitu() {
+        aldaketak.firePropertyChange(P_MAPA_NEGUTEGI_INFO_CLICK, null, null);
     }
 
     public String[] jasoAukerak(FiltroSelektore<Negutegia, String> selector, String mota) {

@@ -22,6 +22,7 @@ import javax.swing.event.ChangeListener;
 import growtech.config.AppKonfigurazioa;
 import growtech.mqtt.MQTT;
 import growtech.ui.ktrl.MapaKtrl;
+import growtech.ui.modeloak.MapaKudeatzailea;
 import growtech.ui.panelak.DatuHistorialPanela;
 import growtech.ui.panelak.DeskonektatutaPanela;
 import growtech.ui.panelak.InformazioPanela;
@@ -111,8 +112,6 @@ public class ItxuraPrintzipala extends JFrame implements PropertyChangeListener,
     private void hasieratuAldagaiak() {
         this.mapaPanela = new MapaPanela(this);
         this.mapaPanela.addPropertyChangeListener(this);
-        mapaKtrl = mapaPanela.getMapaKtrl();
-        mapaKtrl.addPropertyChangeListener(this);
         deskonektatutaPanela = new DeskonektatutaPanela();
         negutegiInfoPanela = new NegutegiInfoPanela(this);
         negutegiInfoPanela.addPropertyChangeListener(this);
@@ -125,19 +124,19 @@ public class ItxuraPrintzipala extends JFrame implements PropertyChangeListener,
             throw new RuntimeException(ex);
         }
 
+        negutegi = new ArrayList<>();
+        negutegi = hasieratuNegutegiak(negutegi);
         menuBarra = new MenuBarra(this, mqtt);
         menuBarra.addPropertyChangeListener(this);
         tabPanela = new JTabbedPane();
         tabPanela.addChangeListener(this);
-        negutegi = new ArrayList<>();
-
-        this.hasieratuNegutegiak();
     }
 
-    private void hasieratuNegutegiak() {
+    public List<Negutegia> hasieratuNegutegiak(List<Negutegia> negu) {
         NegutegiKudeaketa negutegiKudeaketa = new NegutegiKudeaketa();
-        negutegiKudeaketa.hasieratuNegutegiak(negutegi);
-        negutegi = negutegiKudeaketa.jasoBeharDirenNegutegiak(negutegi);
+        negu = negutegiKudeaketa.hasieratuNegutegiak(negu);
+        negu = negutegiKudeaketa.jasoBeharDirenNegutegiak(negu);
+        return negu;
     }
 
     @Override
@@ -148,6 +147,8 @@ public class ItxuraPrintzipala extends JFrame implements PropertyChangeListener,
             infoZabalikDago = false;
             historialZabalikDago = false;
             tabPanela.removeAll();
+            mapaPanela = new MapaPanela(this); // hau ez bada egiten filtroa apurtu egiten da 
+            mapaPanela.addPropertyChangeListener(this); // deskonektatu eta konektatzerakoan
             tabPanela.addTab(" MAPA ", mapaPanela.sortuMapaPanela());
         }
         if (propietatea.equals(MenuBarra.P_DESKONEKTATU)) {
@@ -167,7 +168,7 @@ public class ItxuraPrintzipala extends JFrame implements PropertyChangeListener,
                 }
             }
         }
-        if (propietatea.equals(MapaKtrl.P_MAPA_NEGUTEGI_INFO_CLICK)) {
+        if (propietatea.equals(MapaKudeatzailea.P_MAPA_NEGUTEGI_INFO_CLICK)) {
             tabPanela.setSelectedIndex(1);
         }
         if (propietatea.equals(NegutegiInfoPanela.P_HISTORIAL_PANELA)) {

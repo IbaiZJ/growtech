@@ -14,7 +14,7 @@ import javax.swing.SwingConstants;
 import growtech.util.IrudiaTestuFormatua;
 import growtech.util.userKudeaketa.Erabiltzailea;
 
-public class negutegiInfoPanelAdaptadore implements ListCellRenderer<Erabiltzailea> {
+public class NegutegiInfoPanelAdaptadore implements ListCellRenderer<Erabiltzailea> {
     @Override
     public Component getListCellRendererComponent(JList<? extends Erabiltzailea> list, Erabiltzailea value, int index,
             boolean isSelected, boolean cellHasFocus) {

@@ -170,18 +170,23 @@ public class MenuBarra {
 
     public void konektatuAkzioaEman() {
         new KonektatuDialogoa(itxura, mqtt);
-        konektatu.setEnabled(false);
-        deskonektatu.setEnabled(true);
 
-        aldaketak.firePropertyChange(P_KONEKTATU, -1, "konektatu");
+        if(mqtt.isKonektatutaDago()) {
+            konektatu.setEnabled(false);
+            deskonektatu.setEnabled(true);
+    
+            aldaketak.firePropertyChange(P_KONEKTATU, -1, "konektatu");
+        }
     }
 
     public void deskonektatuAkzioaEman() {
         try {
             mqtt.disconnect();
         } catch (Exception ex) {
-            JOptionPane.showMessageDialog(itxura, "Errore bat egon da\ndeskonektatzerakoan",
-                    "Errorea", JOptionPane.ERROR_MESSAGE);
+            // JOptionPane.showMessageDialog(itxura, "Errore bat egon
+            // da\ndeskonektatzerakoan",
+            // "Errorea", JOptionPane.ERROR_MESSAGE);
+            System.err.println("Errore bat egon da deskonektatzerakoan");
         }
         konektatu.setEnabled(true);
         deskonektatu.setEnabled(false);

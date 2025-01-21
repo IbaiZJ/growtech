@@ -14,7 +14,7 @@ import growtech.util.userKudeaketa.ErabiltzaileMota;
 public class NegutegiKudeaketa {
     private final String negutegiTxtPath = "src/main/resources/negutegiak.txt";
 
-    public void hasieratuNegutegiak(List<Negutegia> negutegiak) {
+    public List<Negutegia> hasieratuNegutegiak(List<Negutegia> negutegiak) {
         try (BufferedReader irakurri = new BufferedReader(new FileReader(negutegiTxtPath))) {
             String linea;
             while ((linea = irakurri.readLine()) != null) { // lineak irakurri bukaerara heldu harte
@@ -31,9 +31,11 @@ public class NegutegiKudeaketa {
                             new Negutegia(id, herria, lurraldea, new GeoPosition(latitude, longitude), partzelaKop));
                 }
             }
+            
         } catch (IOException e) {
             System.err.println("Errore bat gertatu bat negutegiak irakurtzerakoan");
         }
+        return negutegiak;
     }
 
     // TODO Hobetu filtroa

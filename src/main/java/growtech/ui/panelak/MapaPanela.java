@@ -40,9 +40,9 @@ import com.formdev.flatlaf.extras.FlatSVGIcon;
 import growtech.mqtt.MQTTDatuak;
 import growtech.ui.ItxuraPrintzipala;
 import growtech.ui.adaptadore.MapaJLAdaptadorea;
-import growtech.ui.adaptadore.negutegiInfoPanelAdaptadore;
+import growtech.ui.adaptadore.NegutegiInfoPanelAdaptadore;
 import growtech.ui.ktrl.MapaKtrl;
-import growtech.ui.modeloak.MapaPanelaKudeatzailea;
+import growtech.ui.modeloak.MapaKudeatzailea;
 import growtech.util.filtro.FiltroSelektore;
 import growtech.util.filtro.NegutegiFSFactory;
 import growtech.util.negutegiKudeaketa.Negutegia;
@@ -55,7 +55,7 @@ import lombok.Getter;
 public class MapaPanela implements PropertyChangeListener {
     private ItxuraPrintzipala itxura;
     private MapaKtrl mapaKtrl;
-    private MapaPanelaKudeatzailea mapaKudeatzailea;
+    private MapaKudeatzailea mapaKudeatzailea;
     private JList<Negutegia> negutegiJL;
     private JPanel mapaJPanel;
     public static JXMapViewer mapa;
@@ -75,9 +75,9 @@ public class MapaPanela implements PropertyChangeListener {
 
     public MapaPanela(ItxuraPrintzipala itxura) {
         this.itxura = itxura;
-        this.mapaKudeatzailea = new MapaPanelaKudeatzailea(itxura, this);
+        this.mapaKudeatzailea = new MapaKudeatzailea(itxura, this);
         this.mapaKudeatzailea.addPropertyChangeListener(this);
-        this.mapaKtrl = new MapaKtrl(this, mapaKudeatzailea, itxura);
+        this.mapaKtrl = new MapaKtrl(this, mapaKudeatzailea);
         aukerenZerrenda = new ArrayList<>();
         aldaketak = new PropertyChangeSupport(itxura);
         hasieratuTenpHezeBalioak();
@@ -306,7 +306,7 @@ public class MapaPanela implements PropertyChangeListener {
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
         erabiltzaileJL = new JList<>();
-        erabiltzaileJL.setCellRenderer(new negutegiInfoPanelAdaptadore());
+        erabiltzaileJL.setCellRenderer(new NegutegiInfoPanelAdaptadore());
         erabiltzaileJL.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         erabiltzaileJL.addListSelectionListener(mapaKtrl);
         erabiltzaileJL.setListData(sortuBistaratzekoakErabiltzaileak(negutegia));
@@ -403,7 +403,7 @@ public class MapaPanela implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent evt) {
         String propietatea = evt.getPropertyName();
 
-        if (propietatea.equals(MapaPanelaKudeatzailea.P_MAPA_HANDITUTA)) {
+        if (propietatea.equals(MapaKudeatzailea.P_MAPA_HANDITUTA)) {
             // lehenengo bi linea hauek negutegi pestaña aktualizatzeko
             mapaPanelaPred();
             aldaketak.firePropertyChange(P_MAPA_NEGUTEGI_INFO_EXIT, -1, null);
@@ -413,11 +413,14 @@ public class MapaPanela implements PropertyChangeListener {
             mapaPanelaHandituta(negutegia);
             aldaketak.firePropertyChange(P_MAPA_NEGUTEGI_INFO, -1, null);
         }
-        if (propietatea.equals(MapaPanelaKudeatzailea.P_MAPA_NORMAL)) {
+        if (propietatea.equals(MapaKudeatzailea.P_MAPA_NEGUTEGI_INFO_CLICK)) {
+            aldaketak.firePropertyChange(MapaKudeatzailea.P_MAPA_NEGUTEGI_INFO_CLICK, null, null);
+        }
+        if (propietatea.equals(MapaKudeatzailea.P_MAPA_NORMAL)) {
             mapaPanelaPred();
             aldaketak.firePropertyChange(P_MAPA_NEGUTEGI_INFO_EXIT, -1, null);
         }
-        if (propietatea.equals(MapaPanelaKudeatzailea.P_TENP_HEZE_AKTUALIZATU)) {
+        if (propietatea.equals(MapaKudeatzailea.P_TENP_HEZE_AKTUALIZATU)) {
             if (tenperaturaLabel != null && hezetasunLabel != null) {
                 tenperaturaLabel.setText("Tenperatura " + String.format("%.1f", MQTTDatuak.AZKEN_TENPERATURA) + " ºC");
                 hezetasunLabel.setText("Hezetasuna " + String.format("%.1f", MQTTDatuak.AZKEN_HEZETASUNA) + " %");
