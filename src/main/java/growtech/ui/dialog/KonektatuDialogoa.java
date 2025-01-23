@@ -1,4 +1,4 @@
-package growtech.mqtt.dialog;
+package growtech.ui.dialog;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

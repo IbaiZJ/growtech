@@ -35,7 +35,6 @@ public class ErabiltzaileKudeaketa {
         }
     }
 
-    // TODO Stream kendu ahal bada
     public static void ezabatuErabiltzailea(List<Erabiltzailea> ezabatuBeharrekoErabiltzaileak) {
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -76,27 +75,17 @@ public class ErabiltzaileKudeaketa {
         return new ArrayList<>();
     }
 
-    /*
-     * public List<Erabiltzailea> erabiltzaileakIrakurri() {
-     * try {
-     * ObjectMapper mapper = new ObjectMapper();
-     * File file = new File(getClass().getResource("/users.json").toURI());
-     * List<Erabiltzailea> erabiltzaileak;
-     * 
-     * if (file.exists() && file.length() > 0) {
-     * erabiltzaileak = mapper.readValue(file, new
-     * TypeReference<List<Erabiltzailea>>(){});
-     * } else {
-     * erabiltzaileak = new ArrayList<>();
-     * }
-     * return erabiltzaileak;
-     * }
-     * catch (Exception ex) {
-     * System.out.println("Errore JSON: " + ex.getMessage());
-     * }
-     * return null;
-     * }
-     */
+    /*public List<Erabiltzailea> jasoErabiltzaileakFiltratuta(FiltroSelektorea<Erabiltzailea, Boolean> selektorea) {
+        List<Erabiltzailea> aukeratuak = new ArrayList<>();
+
+        for (Erabiltzailea erabiltzaile : erabiltzaileakIrakurri()) {
+            if ((selektorea.selektorea(erabiltzaile))) {
+                aukeratuak.add(erabiltzaile);
+            }
+        }
+
+        return aukeratuak;
+    }*/
 
     public static Erabiltzailea bilatuErabiltzailea(String erabiltzaile, String pasahitza) {
         ErabiltzaileKudeaketa erabiltzaileKudeaketa = new ErabiltzaileKudeaketa();

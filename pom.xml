@@ -78,7 +78,6 @@
 
     <build>
         <plugins>
-            <!-- Plugin para especificar la clase principal -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
@@ -92,7 +91,6 @@
                 </configuration>
             </plugin>
 
-            <!-- Plugin para empaquetar todas las dependencias en un único JAR -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>

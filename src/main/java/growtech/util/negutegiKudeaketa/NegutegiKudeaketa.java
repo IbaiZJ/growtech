@@ -14,6 +14,13 @@ import growtech.util.userKudeaketa.ErabiltzaileMota;
 public class NegutegiKudeaketa {
     private final String negutegiTxtPath = "src/main/resources/negutegiak.txt";
 
+    public static List<Negutegia> jasoNegutegiak(List<Negutegia> negu) {
+        NegutegiKudeaketa negutegiKudeaketa = new NegutegiKudeaketa();
+        negu = negutegiKudeaketa.hasieratuNegutegiak(negu);
+        negu = negutegiKudeaketa.jasoBeharDirenNegutegiak(negu);
+        return negu;
+    }
+
     public List<Negutegia> hasieratuNegutegiak(List<Negutegia> negutegiak) {
         try (BufferedReader irakurri = new BufferedReader(new FileReader(negutegiTxtPath))) {
             String linea;
@@ -31,14 +38,13 @@ public class NegutegiKudeaketa {
                             new Negutegia(id, herria, lurraldea, new GeoPosition(latitude, longitude), partzelaKop));
                 }
             }
-            
+
         } catch (IOException e) {
             System.err.println("Errore bat gertatu bat negutegiak irakurtzerakoan");
         }
         return negutegiak;
     }
 
-    // TODO Hobetu filtroa
     public List<Negutegia> jasoBeharDirenNegutegiak(List<Negutegia> negutegiak) {
         List<Negutegia> beharrezkoNegutegiak = new ArrayList<>();
 
@@ -48,7 +54,7 @@ public class NegutegiKudeaketa {
             List<Integer> erabiltzaileNegutegiId = ErabiltzaileKudeaketa.ERABILTZAILEA.getNegutegiak();
             for (Negutegia negutegia : negutegiak) {
                 for (Integer i : erabiltzaileNegutegiId) {
-                    if(i == negutegia.getId()) {
+                    if (i == negutegia.getId()) {
                         beharrezkoNegutegiak.add(negutegia);
                     }
                 }

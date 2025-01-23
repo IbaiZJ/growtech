@@ -34,10 +34,24 @@
   "mota" : "USER",
   "negutegiak" : [ 1 ]
 }, {
+  "izena" : "Ibai",
+  "abizena" : "Ochoa de Echaguen",
+  "erabiltzaile" : "iOchoa",
+  "pasahitza" : "$2a$10$tNMHaUwEFQQ1RoEL5vmW1.dnzq1KKOkxi8/s4FY64VhyHi3.fv50e",
+  "mota" : "USER",
+  "negutegiak" : [ 1, 2, 3, 4 ]
+}, {
+  "izena" : "Mikel",
+  "abizena" : "Alvarez",
+  "erabiltzaile" : "mAlvarez",
+  "pasahitza" : "$2a$10$wMaJoPHGXQzGenDRIYmS6emSKWCsfUo6pjPijVKjIZT7pEwx5PEsW",
+  "mota" : "USER",
+  "negutegiak" : [ 8, 9, 10, 11 ]
+}, {
   "izena" : "Aimar",
   "abizena" : "Kobeaga",
-  "erabiltzaile" : "fox",
-  "pasahitza" : "$2a$10$QZh5Vk9yP56X5XuniAxZm.aXAJhENct.zI8FipgsRpOR2VA9Jq/KO",
+  "erabiltzaile" : "gazpancho",
+  "pasahitza" : "$2a$10$w7dtgxrUX8y0wzk9R.dWVeMHaIBTJQx3emKxQRBzDwReqfQwQDiWO",
   "mota" : "USER",
-  "negutegiak" : [ 1, 2, 4 ]
+  "negutegiak" : [ 6, 7, 8 ]
 } ]

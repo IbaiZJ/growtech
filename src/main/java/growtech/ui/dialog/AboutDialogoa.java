@@ -19,7 +19,7 @@ import javax.swing.JPanel;
 import org.jdesktop.swingx.JXHyperlink;
 
 import growtech.config.AppKonfigurazioa;
-import growtech.util.AppUtils;
+import growtech.util.URL;
 import growtech.util.IrudiaTestuFormatua;
 
 
@@ -46,7 +46,7 @@ public class AboutDialogoa extends JDialog implements ActionListener {
             AppKonfigurazioa.APP_IZENA, new Font("Arial", Font.BOLD, 18), Color.BLACK));
 
         JPanel centerPanela = new JPanel(new GridLayout(9, 1, 5, 5));
-        JLabel bertsioaLabel = new JLabel("Bertsioa: " + AppUtils.getAppBertsioa());
+        JLabel bertsioaLabel = new JLabel("Bertsioa: " + URL.getAppBertsioa());
         JLabel javaRuntimeLabel = new JLabel("Java runtime: %s".formatted(Runtime.version()));
         JXHyperlink githubLinkLabel = new JXHyperlink();
         githubLinkLabel.setText(AppKonfigurazioa.GITHUB_URL);
@@ -88,7 +88,7 @@ public class AboutDialogoa extends JDialog implements ActionListener {
             this.dispose();
         }
         if(komandoa == AppKonfigurazioa.GITHUB_URL) {
-            AppUtils.sabalduUrlNabigatzailean(AppKonfigurazioa.GITHUB_URL);
+            URL.sabalduUrlNabigatzailean(AppKonfigurazioa.GITHUB_URL);
         }
         
     }

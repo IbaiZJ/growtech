@@ -64,7 +64,6 @@ public class ItxuraPrintzipala extends JFrame implements PropertyChangeListener,
 
         this.setContentPane(sortuLeihoPanela());
         this.setJMenuBar(menuBarra.sortuMenuBar());
-
         this.setVisible(true);
 
         menuBarra.konektatuAkzioaEman();
@@ -110,8 +109,8 @@ public class ItxuraPrintzipala extends JFrame implements PropertyChangeListener,
     }
 
     private void hasieratuAldagaiak() {
-        this.mapaPanela = new MapaPanela(this);
-        this.mapaPanela.addPropertyChangeListener(this);
+        // this.mapaPanela = new MapaPanela(this);
+        // this.mapaPanela.addPropertyChangeListener(this);
         deskonektatutaPanela = new DeskonektatutaPanela();
         negutegiInfoPanela = new NegutegiInfoPanela(this);
         negutegiInfoPanela.addPropertyChangeListener(this);
@@ -125,18 +124,11 @@ public class ItxuraPrintzipala extends JFrame implements PropertyChangeListener,
         }
 
         negutegi = new ArrayList<>();
-        negutegi = hasieratuNegutegiak(negutegi);
+        negutegi = NegutegiKudeaketa.jasoNegutegiak(negutegi);
         menuBarra = new MenuBarra(this, mqtt);
         menuBarra.addPropertyChangeListener(this);
         tabPanela = new JTabbedPane();
         tabPanela.addChangeListener(this);
-    }
-
-    public List<Negutegia> hasieratuNegutegiak(List<Negutegia> negu) {
-        NegutegiKudeaketa negutegiKudeaketa = new NegutegiKudeaketa();
-        negu = negutegiKudeaketa.hasieratuNegutegiak(negu);
-        negu = negutegiKudeaketa.jasoBeharDirenNegutegiak(negu);
-        return negu;
     }
 
     @Override
@@ -147,7 +139,7 @@ public class ItxuraPrintzipala extends JFrame implements PropertyChangeListener,
             infoZabalikDago = false;
             historialZabalikDago = false;
             tabPanela.removeAll();
-            mapaPanela = new MapaPanela(this); // hau ez bada egiten filtroa apurtu egiten da 
+            mapaPanela = new MapaPanela(this); // hau ez bada egiten filtroa apurtu egiten da
             mapaPanela.addPropertyChangeListener(this); // deskonektatu eta konektatzerakoan
             tabPanela.addTab(" MAPA ", mapaPanela.sortuMapaPanela());
         }
@@ -190,7 +182,7 @@ public class ItxuraPrintzipala extends JFrame implements PropertyChangeListener,
 
     @Override
     public void stateChanged(ChangeEvent e) {
-        if (tabPanela.getSelectedIndex() != 0) {
+        if (tabPanela.getSelectedIndex() != 0 || !mqtt.isKonektatutaDago()) {
             toolBar.getComponent(4).setVisible(false);
             toolBar.getComponent(5).setVisible(false);
             toolBar.getComponent(6).setVisible(false);
@@ -199,7 +191,7 @@ public class ItxuraPrintzipala extends JFrame implements PropertyChangeListener,
             toolBar.getComponent(5).setVisible(true);
             toolBar.getComponent(6).setVisible(true);
         }
-        if(historialZabalikDago) { // TODO: historial mugimendua
+        if (historialZabalikDago) {
             if (tabPanela.getSelectedIndex() != 2) {
                 toolBar.getComponent(7).setVisible(false);
                 toolBar.getComponent(8).setVisible(false);
@@ -207,7 +199,6 @@ public class ItxuraPrintzipala extends JFrame implements PropertyChangeListener,
                 toolBar.getComponent(7).setVisible(true);
                 toolBar.getComponent(8).setVisible(true);
             }
-
         }
     }
 }

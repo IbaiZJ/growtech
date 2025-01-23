@@ -17,8 +17,7 @@ import growtech.ui.theme.TemaKudeatzailea;
 
 public class GrowTech {
 
-    public static void main(String[] args) {
-
+    private void UIModifikatu() {
         if (SystemInfo.isLinux) {
             JFrame.setDefaultLookAndFeelDecorated(true);
             JDialog.setDefaultLookAndFeelDecorated(true);
@@ -54,12 +53,19 @@ public class GrowTech {
         UIManager.put("ScrollBar.thumbInsets", new Insets(insets, insets, insets, insets));
 
         TemaKudeatzailea.ezarriArgiaTema();
+    }
 
+    private void aplikazioaHasieratu() {
         LoginDialogoa adminUserDialogoa = new LoginDialogoa(null);
         if (!adminUserDialogoa.isITXI_DA_X()) {
             new ItxuraPrintzipala();
         }
+    }
 
+    public static void main(String[] args) {
+        GrowTech growTech = new GrowTech();
+        growTech.UIModifikatu();
+        growTech.aplikazioaHasieratu();
     }
 
 }

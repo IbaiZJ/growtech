@@ -33,10 +33,9 @@ public class MQTTDatuak {
     }
 
     private static void azkenTenperaturaHezetasunAktualizatu(String topic, double zenbakia) {
-        if(topic.equals("Hezetasuna")) {
+        if (topic.equals("Hezetasuna")) {
             AZKEN_HEZETASUNA = zenbakia;
-        }
-        else if(topic.equals("Tenperatura")) {
+        } else if (topic.equals("Tenperatura")) {
             AZKEN_TENPERATURA = zenbakia;
         }
     }

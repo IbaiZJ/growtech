@@ -15,7 +15,13 @@ import javax.swing.SwingConstants;
 import growtech.util.userKudeaketa.ErabiltzaileMota;
 import growtech.util.userKudeaketa.Erabiltzailea;
 
-public class ErabiltzaileEzabatuAdaptadorea implements ListCellRenderer<Erabiltzailea> {
+public class ErabiltzaileAdaptadorea implements ListCellRenderer<Erabiltzailea> {
+    private boolean aukeratuDaiteke;
+
+    public ErabiltzaileAdaptadorea(boolean aukeratuDaiteke) {
+        this.aukeratuDaiteke = aukeratuDaiteke;
+    }
+
     @Override
     public Component getListCellRendererComponent(JList<? extends Erabiltzailea> list, Erabiltzailea value, int index,
             boolean isSelected, boolean cellHasFocus) {
@@ -29,7 +35,7 @@ public class ErabiltzaileEzabatuAdaptadorea implements ListCellRenderer<Erabiltz
             testua.setForeground(Color.BLACK);
         testua.setHorizontalAlignment(SwingConstants.CENTER);
 
-        if (isSelected)
+        if (isSelected && aukeratuDaiteke)
             panela.setBackground(Color.RED);
 
         panela.add(testua);

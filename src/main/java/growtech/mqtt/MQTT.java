@@ -29,14 +29,14 @@ public class MQTT implements MqttCallback {
     private static MqttClient client;
     private MqttConnectOptions connOpts;
 
-    private volatile double valueTemperature;
+    private volatile double valueTenperatura;
     private volatile double valueHezetasuna;
     private ItxuraPrintzipala itxuraPrintzipala;
 
     private @Getter boolean konektatutaDago;
 
     public MQTT(String broker, String clientId) throws MqttException {
-        this.valueTemperature = 0.0;
+        this.valueTenperatura = 0.0;
         this.valueHezetasuna = 0.0;
         konektatutaDago = false;
 
@@ -81,7 +81,7 @@ public class MQTT implements MqttCallback {
     }
 
     public double getTemperature() {
-        return this.valueTemperature;
+        return this.valueTenperatura;
     }
 
     public double getHezetasuna() {
@@ -130,9 +130,9 @@ public class MQTT implements MqttCallback {
 
         switch (topic) {
             case TOPIC_TENPERATURA:
-                this.valueTemperature = Double.parseDouble(content);
-                MQTTDatuak.idatziJasotakoDatua(TOPIC_TENPERATURA, this.valueTemperature);
-                System.out.println(TOPIC_TENPERATURA + String.valueOf(valueTemperature));
+                this.valueTenperatura = Double.parseDouble(content);
+                MQTTDatuak.idatziJasotakoDatua(TOPIC_TENPERATURA, this.valueTenperatura);
+                System.out.println(TOPIC_TENPERATURA + String.valueOf(valueTenperatura));
                 break;
             case TOPIC_HEZETASUNA:
                 this.valueHezetasuna = Double.parseDouble(content);

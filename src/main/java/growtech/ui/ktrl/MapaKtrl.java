@@ -9,7 +9,7 @@ import javax.swing.event.ListSelectionListener;
 
 import growtech.ui.modeloak.MapaKudeatzailea;
 import growtech.ui.panelak.MapaPanela;
-import growtech.util.AppUtils;
+import growtech.util.URL;
 import growtech.util.negutegiKudeaketa.Negutegia;
 
 public class MapaKtrl implements ListSelectionListener, ActionListener, ItemListener {
@@ -43,7 +43,7 @@ public class MapaKtrl implements ListSelectionListener, ActionListener, ItemList
         }
         else if(e.getActionCommand().equals("maps")) {
             Negutegia negutegia = mapaPanela.getNegutegiJL().getSelectedValue();
-            AppUtils.sabalduUrlNabigatzailean("https://www.google.com/maps/dir/?api=1&destination="+ negutegia.getPosizioa().getLatitude() +","+ negutegia.getPosizioa().getLongitude());
+            URL.sabalduUrlNabigatzailean("https://www.google.com/maps/dir/?api=1&destination="+ negutegia.getPosizioa().getLatitude() +","+ negutegia.getPosizioa().getLongitude());
         }
         else if(e.getActionCommand().equals("enter")) {
             mapaKudeatzailea.mapatikNegutegiraMugitu();

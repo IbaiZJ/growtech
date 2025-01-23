@@ -3,6 +3,7 @@ package growtech.ui.panelak;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.beans.PropertyChangeEvent;
@@ -156,6 +157,7 @@ public class NegutegiInfoPanela implements PropertyChangeListener {
         JPanel eskumaPanelaInformazioaHistoriala = new JPanel(new GridLayout(1, 2, 20, 20));
 
         haizagailuaSVG = new JLabel(new FlatSVGIcon("svg/ventilatorOff.svg", 100, 100));
+        haizagailuaSVG.setMinimumSize(new Dimension(100,100));
         haizagailuaSlider = new JSlider();
         haizagailuaSlider.addChangeListener(negutegiInfoKtrl);
         haizagailuaSlider.setName("haizagailuaSlider");
@@ -166,13 +168,16 @@ public class NegutegiInfoPanela implements PropertyChangeListener {
         ezkerPanela.add(haizagailuaSlider);
 
         onOffBotoia = new JButton(new FlatSVGIcon("svg/on.svg", 40, 40));
+        onOffBotoia.setMinimumSize(new Dimension(40,40));
         onOffBotoia.addActionListener(negutegiInfoKtrl);
         onOffBotoia.setActionCommand("onOffBotoia");
         JButton historialaBotoia = new JButton(new FlatSVGIcon("svg/Historiala.svg", 40, 40)/* + "Historiala" */);
+        historialaBotoia.setMinimumSize(new Dimension(40,40));
         historialaBotoia.setToolTipText("Historiala ikusi");
         historialaBotoia.addActionListener(negutegiInfoKtrl);
         historialaBotoia.setActionCommand("historialaBotoia");
         JButton informazioBotoia = new JButton(new FlatSVGIcon("svg/info.svg", 40, 40));
+        informazioBotoia.setMinimumSize(new Dimension(40,40));
         informazioBotoia.setToolTipText("Informazioa");
         informazioBotoia.addActionListener(negutegiInfoKtrl);
         informazioBotoia.setActionCommand("informazioBotoia");

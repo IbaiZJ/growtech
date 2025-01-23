@@ -11,7 +11,7 @@ import java.util.Set;
 
 import growtech.ui.ItxuraPrintzipala;
 import growtech.ui.panelak.MapaPanela;
-import growtech.util.filtro.FiltroSelektore;
+import growtech.util.filtro.FiltroSelektorea;
 import growtech.util.negutegiKudeaketa.Negutegia;
 
 public class MapaKudeatzailea {
@@ -44,7 +44,7 @@ public class MapaKudeatzailea {
         aldaketak.firePropertyChange(P_MAPA_NEGUTEGI_INFO_CLICK, null, null);
     }
 
-    public String[] jasoAukerak(FiltroSelektore<Negutegia, String> selector, String mota) {
+    public String[] jasoAukerak(FiltroSelektorea<Negutegia, String> selector, String mota) {
         List<String> aukerak1 = new ArrayList<>();
         Map<String, List<Negutegia>> agrupacion = taldekatu(selector);
         Set<Entry<String, List<Negutegia>>> aukerak = agrupacion.entrySet();
@@ -55,7 +55,7 @@ public class MapaKudeatzailea {
         return (aukerak1.toArray(new String[0]));
     }
 
-    public Map<String, List<Negutegia>> taldekatu(FiltroSelektore<Negutegia, String> selector) {
+    public Map<String, List<Negutegia>> taldekatu(FiltroSelektorea<Negutegia, String> selector) {
         Map<String, List<Negutegia>> agrupazioa = new HashMap<>();
         for (Negutegia Negutegia : itxuraPrintzipala.getNegutegi()) {
             String clave = selector.selektorea(Negutegia);
@@ -71,7 +71,7 @@ public class MapaKudeatzailea {
         return agrupazioa;
     }
 
-    public List<Negutegia> filtratu(FiltroSelektore<Negutegia, String> selector) {
+    public List<Negutegia> filtratu(FiltroSelektorea<Negutegia, String> selector) {
         List<Negutegia> taldea = new ArrayList<>();
         for (Negutegia Negutegia : itxuraPrintzipala.getNegutegi()) {
             if (selector.filtroa(Negutegia)) {
@@ -81,7 +81,7 @@ public class MapaKudeatzailea {
         return taldea;
     }
 
-    public List<Negutegia> filtratu(FiltroSelektore<Negutegia, String> selector, List<Negutegia> bistaratzekoakList) {
+    public List<Negutegia> filtratu(FiltroSelektorea<Negutegia, String> selector, List<Negutegia> bistaratzekoakList) {
         List<Negutegia> Negutegiak = new ArrayList<>();
         for (Negutegia Negutegia : bistaratzekoakList) {
             if (selector.filtroa(Negutegia)) {

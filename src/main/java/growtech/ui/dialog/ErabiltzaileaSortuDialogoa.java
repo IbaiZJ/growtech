@@ -1,5 +1,6 @@
 package growtech.ui.dialog;
 
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.GridLayout;
@@ -25,6 +26,7 @@ import javax.swing.ListSelectionModel;
 import growtech.ui.ItxuraPrintzipala;
 import growtech.ui.adaptadore.MapaJLAdaptadorea;
 import growtech.util.Enkriptazioa;
+import growtech.util.negutegiKudeaketa.NegutegiKudeaketa;
 import growtech.util.negutegiKudeaketa.Negutegia;
 import growtech.util.userKudeaketa.ErabiltzaileKudeaketa;
 import growtech.util.userKudeaketa.ErabiltzaileMota;
@@ -43,7 +45,7 @@ public class ErabiltzaileaSortuDialogoa extends JDialog implements ActionListene
 
     public ErabiltzaileaSortuDialogoa(ItxuraPrintzipala itxuraPrintzipala) {
         super(itxuraPrintzipala, "Sortu Erabiltzailea", true);
-        this.setSize(300, 400);
+        this.setSize(400, 500);
         ImageIcon icon = new ImageIcon(getClass().getResource("/img/GrowTech.png"));
         this.setIconImage(icon.getImage());
         this.setLocationRelativeTo(null);
@@ -54,7 +56,11 @@ public class ErabiltzaileaSortuDialogoa extends JDialog implements ActionListene
     }
 
     private Container sortuDialogoPanela() {
-        JPanel panela = new JPanel(new GridLayout(13, 1));
+        JPanel panela = new JPanel(new GridLayout(4, 1));
+        JPanel panelaIpar = new JPanel(new GridLayout(4, 1));
+        JPanel panelaIpar2 = new JPanel(new GridLayout(4, 1));
+        JPanel panelaHego = new JPanel(new GridLayout(3, 1));
+
         panela.setBorder(BorderFactory.createEmptyBorder(5, 50, 5, 50));
 
         izenaField = new JTextField();
@@ -65,21 +71,26 @@ public class ErabiltzaileaSortuDialogoa extends JDialog implements ActionListene
         erabiltzaileMota = new JComboBox<>(motak);
         sortuBotoia = new JButton("Sortu");
         erroreLabel = new JLabel();
+        erroreLabel.setForeground(Color.RED);
 
         sortuBotoia.addActionListener(this);
 
-        panela.add(new JLabel("Izena"));
-        panela.add(izenaField);
-        panela.add(new JLabel("Abizena"));
-        panela.add(abizenaField);
-        panela.add(new JLabel("Erabiltzailea eta pasahitza"));
-        panela.add(erabiltzaileaField);
-        panela.add(pasahitzaField);
-        panela.add(erabiltzaileMota);
+        panelaIpar.add(new JLabel("Izena"));
+        panelaIpar.add(izenaField);
+        panelaIpar.add(new JLabel("Abizena"));
+        panelaIpar.add(abizenaField);
+        panelaIpar2.add(new JLabel("Erabiltzailea eta pasahitza"));
+        panelaIpar2.add(erabiltzaileaField);
+        panelaIpar2.add(pasahitzaField);
+        panelaIpar2.add(erabiltzaileMota);
+        panelaHego.add(new JLabel());
+        panelaHego.add(erroreLabel);
+        panelaHego.add(sortuBotoia);
+
+        panela.add(panelaIpar);
+        panela.add(panelaIpar2);
         panela.add(negutegiAukeratu());
-        panela.add(new JLabel());
-        panela.add(erroreLabel);
-        panela.add(sortuBotoia);
+        panela.add(panelaHego);
 
         return panela;
     }
@@ -88,7 +99,7 @@ public class ErabiltzaileaSortuDialogoa extends JDialog implements ActionListene
         JScrollPane jlPanela = new JScrollPane(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
                 JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         List<Negutegia> negutegiak = new ArrayList<>();
-        negutegiak = itxuraPrintzipala.hasieratuNegutegiak(negutegiak);
+        negutegiak = NegutegiKudeaketa.jasoNegutegiak(negutegiak);
 
         negutegiJL = new JList<>();
         negutegiJL.setCellRenderer(new MapaJLAdaptadorea());

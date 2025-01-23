@@ -7,10 +7,10 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class AppUtils {
+public class URL {
 
     public static String getAppBertsioa() {
-        var p = AppUtils.class.getPackage();
+        var p = URL.class.getPackage();
         return p.getImplementationVersion() == null ? "<DEV>" : p.getImplementationVersion();
     }
 

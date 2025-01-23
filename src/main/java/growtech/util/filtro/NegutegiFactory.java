@@ -2,15 +2,15 @@ package growtech.util.filtro;
 
 import growtech.util.negutegiKudeaketa.Negutegia;
 
-public class NegutegiFSFactory {
-    public static FiltroSelektore<Negutegia, String> getFiltroLurralde(String balioa) {
+public class NegutegiFactory {
+    public static FiltroSelektorea<Negutegia, String> getFiltroLurralde(String balioa) {
         return new FiltroLurralde(balioa);
     }
-    public static FiltroSelektore<Negutegia, String> getFiltroHerria(String balioa) {
+    public static FiltroSelektorea<Negutegia, String> getFiltroHerria(String balioa) {
         return new FiltroHerria(balioa);
     }
 
-    public static class FiltroLurralde implements FiltroSelektore<Negutegia, String> {
+    public static class FiltroLurralde implements FiltroSelektorea<Negutegia, String> {
         String lurraldea;
 
         public FiltroLurralde(String lurraldea) {
@@ -32,7 +32,7 @@ public class NegutegiFSFactory {
         }
     }
 
-    public static class FiltroHerria implements FiltroSelektore<Negutegia, String> {
+    public static class FiltroHerria implements FiltroSelektorea<Negutegia, String> {
         String herria;
 
         public FiltroHerria(String herria) {

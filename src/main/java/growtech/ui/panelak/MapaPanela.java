@@ -13,6 +13,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,8 +44,10 @@ import growtech.ui.adaptadore.MapaJLAdaptadorea;
 import growtech.ui.adaptadore.NegutegiInfoPanelAdaptadore;
 import growtech.ui.ktrl.MapaKtrl;
 import growtech.ui.modeloak.MapaKudeatzailea;
-import growtech.util.filtro.FiltroSelektore;
-import growtech.util.filtro.NegutegiFSFactory;
+import growtech.util.filtro.ErabiltzaileFactory;
+import growtech.util.filtro.FiltroSelektoreKudeaketa;
+import growtech.util.filtro.FiltroSelektorea;
+import growtech.util.filtro.NegutegiFactory;
 import growtech.util.negutegiKudeaketa.Negutegia;
 import growtech.util.userKudeaketa.ErabiltzaileKudeaketa;
 import growtech.util.userKudeaketa.ErabiltzaileMota;
@@ -114,8 +117,8 @@ public class MapaPanela implements PropertyChangeListener {
         botoia.addActionListener(mapaKtrl);
         botoia.setEnabled(false);
 
-        filtroPanela.add(sortuOpzioPanela(NegutegiFSFactory.getFiltroLurralde("Denak"), "LURRALDEA"));
-        filtroPanela.add(sortuOpzioPanela(NegutegiFSFactory.getFiltroHerria("Denak"), "HERRIA"));
+        filtroPanela.add(sortuOpzioPanela(NegutegiFactory.getFiltroLurralde("Denak"), "LURRALDEA"));
+        filtroPanela.add(sortuOpzioPanela(NegutegiFactory.getFiltroHerria("Denak"), "HERRIA"));
 
         panela.add(botoia, BorderLayout.WEST);
         panela.add(filtroPanela, BorderLayout.CENTER);
@@ -123,7 +126,7 @@ public class MapaPanela implements PropertyChangeListener {
         return panela;
     }
 
-    private Component sortuOpzioPanela(FiltroSelektore<Negutegia, String> selektore, String izena) {
+    private Component sortuOpzioPanela(FiltroSelektorea<Negutegia, String> selektore, String izena) {
         JPanel panela = new JPanel(new BorderLayout());
         JComboBox<String> comboBox = new JComboBox<>(mapaKudeatzailea.jasoAukerak(selektore, izena));
         comboBox.setSelectedIndex(0);
@@ -162,10 +165,10 @@ public class MapaPanela implements PropertyChangeListener {
             if (!(balioa.equals("LURRALDEA") || balioa.equals("HERRIA"))) {
                 switch (i) {
                     case 0:
-                        bistaratzekoakList = mapaKudeatzailea.filtratu(NegutegiFSFactory.getFiltroLurralde(balioa));
+                        bistaratzekoakList = mapaKudeatzailea.filtratu(NegutegiFactory.getFiltroLurralde(balioa));
                         break;
                     case 1:
-                        bistaratzekoakList = mapaKudeatzailea.filtratu(NegutegiFSFactory.getFiltroHerria(balioa),
+                        bistaratzekoakList = mapaKudeatzailea.filtratu(NegutegiFactory.getFiltroHerria(balioa),
                                 bistaratzekoakList);
                         break;
                 }
@@ -315,23 +318,24 @@ public class MapaPanela implements PropertyChangeListener {
         return jlPanela;
     }
 
-    // TODO Filtroa hobetu
     private Erabiltzailea[] sortuBistaratzekoakErabiltzaileak(Negutegia negutegia) {
         List<Erabiltzailea> erabiltzaileak = new ArrayList<>();
         ErabiltzaileKudeaketa erabiltzaileKudeaketa = new ErabiltzaileKudeaketa();
         erabiltzaileak = erabiltzaileKudeaketa.erabiltzaileakIrakurri();
         List<Erabiltzailea> bistaratzekoErabiltzaile = new ArrayList<>();
 
+        erabiltzaileak = FiltroSelektoreKudeaketa.filtroa(ErabiltzaileFactory.getFiltroMota(ErabiltzaileMota.USER),
+                erabiltzaileak);
+
         for (Erabiltzailea erabiltzaile : erabiltzaileak) {
-            if (erabiltzaile.getMota() == ErabiltzaileMota.USER) {
-                List<Integer> erabiltzaileNegutegi = erabiltzaile.getNegutegiak();
-                for (Integer i : erabiltzaileNegutegi) {
-                    if (i == negutegia.getId()) {
-                        bistaratzekoErabiltzaile.add(erabiltzaile);
-                    }
+            List<Integer> erabiltzaileNegutegi = erabiltzaile.getNegutegiak();
+            for (Integer i : erabiltzaileNegutegi) {
+                if (i == negutegia.getId()) {
+                    bistaratzekoErabiltzaile.add(erabiltzaile);
                 }
             }
         }
+        Collections.sort(bistaratzekoErabiltzaile, ErabiltzaileFactory.getIzenKonparatzailea());
 
         return (bistaratzekoErabiltzaile.toArray(new Erabiltzailea[0]));
     }
