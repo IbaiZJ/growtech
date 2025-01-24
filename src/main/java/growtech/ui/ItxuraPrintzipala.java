@@ -136,6 +136,7 @@ public class ItxuraPrintzipala extends JFrame implements PropertyChangeListener,
         String propietatea = evt.getPropertyName();
 
         if (propietatea.equals(MenuBarra.P_KONEKTATU)) {
+            // Konektatzerakoan
             infoZabalikDago = false;
             historialZabalikDago = false;
             tabPanela.removeAll();
@@ -144,14 +145,17 @@ public class ItxuraPrintzipala extends JFrame implements PropertyChangeListener,
             tabPanela.addTab(" MAPA ", mapaPanela.sortuMapaPanela());
         }
         if (propietatea.equals(MenuBarra.P_DESKONEKTATU)) {
+            // Deskonektatzerakoan
             tabPanela.removeAll();
             tabPanela.addTab(" KONEKTATU ", deskonektatutaPanela.sortuDeskonektatutaPanela());
         }
         if (propietatea.equals(MapaPanela.P_MAPA_NEGUTEGI_INFO)) {
+            // Mapa paneleko JList konponenteko datu bat ikutzen denean
             if (tabPanela.getTabCount() == 1)
                 tabPanela.addTab(" NEGUTEGIA ", negutegiInfoPanela.negutegiInfoPZentrala());
         }
         if (propietatea.equals(MapaPanela.P_MAPA_NEGUTEGI_INFO_EXIT)) {
+            // Mapa panelean dagoen atzera <= botoia ikutzen denean
             if (tabPanela.getTabCount() > 1) {
                 infoZabalikDago = false;
                 historialZabalikDago = false;
@@ -161,9 +165,11 @@ public class ItxuraPrintzipala extends JFrame implements PropertyChangeListener,
             }
         }
         if (propietatea.equals(MapaKudeatzailea.P_MAPA_NEGUTEGI_INFO_CLICK)) {
+            // Mapa panelean negutegi panelera joateko botoia zakatzen denean
             tabPanela.setSelectedIndex(1);
         }
         if (propietatea.equals(NegutegiInfoPanela.P_HISTORIAL_PANELA)) {
+            // Negutegi panelean historial botoia zakatzen denean
             if (!historialZabalikDago) {
                 historialZabalikDago = true;
                 // tabPanela.addTab(" HISTORIALA ", datuHistorialPanela.historialPanelaSortu());
@@ -172,6 +178,7 @@ public class ItxuraPrintzipala extends JFrame implements PropertyChangeListener,
             }
         }
         if (propietatea.equals(NegutegiInfoPanela.P_INFORMAZIO_PANELA)) {
+            // Negutegi panelean informazio botoia zakatzen denean
             if (!infoZabalikDago) {
                 infoZabalikDago = true;
                 tabPanela.addTab(" INFORMAZIOA ", informazioPanela.sortuInformazioPanela());
@@ -182,6 +189,9 @@ public class ItxuraPrintzipala extends JFrame implements PropertyChangeListener,
 
     @Override
     public void stateChanged(ChangeEvent e) {
+        // Denbora guztian ikusten ez diren tool bar-eko konponenteak ikusteko
+        // funtzio honen bidez noiz ikusi behar diren gestionatu egiten da
+
         if (tabPanela.getSelectedIndex() != 0 || !mqtt.isKonektatutaDago()) {
             toolBar.getComponent(4).setVisible(false);
             toolBar.getComponent(5).setVisible(false);

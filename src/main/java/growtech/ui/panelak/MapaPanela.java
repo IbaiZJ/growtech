@@ -376,6 +376,7 @@ public class MapaPanela implements PropertyChangeListener {
                 MQTTDatuak.AZKEN_TENPERATURA = Double.parseDouble(azkenDatua);
                 tenperaturaLabel.setText("Tenperatura " + String.format("%.1f", balioa) + " ºC");
             }
+            br.close();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -390,6 +391,7 @@ public class MapaPanela implements PropertyChangeListener {
                 MQTTDatuak.AZKEN_HEZETASUNA = Double.parseDouble(azkenDatua);
                 hezetasunLabel.setText("Hezetasuna " + String.format("%.1f", balioa) + " %");
             }
+            br.close();
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }

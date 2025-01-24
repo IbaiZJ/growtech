@@ -117,7 +117,6 @@ public class MenuBarra {
 
         artxiboMenua.setMnemonic(KeyEvent.VK_F1);
         artxiboMenua.add(sortuKonekzioMenua());
-        // artxiboMenua.add(user);
         artxiboMenua.addSeparator();
         artxiboMenua.add(irten);
 
@@ -186,9 +185,6 @@ public class MenuBarra {
         try {
             mqtt.disconnect();
         } catch (Exception ex) {
-            // JOptionPane.showMessageDialog(itxura, "Errore bat egon
-            // da\ndeskonektatzerakoan",
-            // "Errorea", JOptionPane.ERROR_MESSAGE);
             System.err.println("Errore bat egon da deskonektatzerakoan");
         }
         konektatu.setEnabled(true);
@@ -223,8 +219,7 @@ public class MenuBarra {
                 deskonektatuAkzioaEman();
             }
             if (testua.equals("Konekzio Konfigurazioa")) {
-                @SuppressWarnings("unused")
-                KonexioDialogoa konexioDialogoa = new KonexioDialogoa(itxura);
+                new KonexioDialogoa(itxura);
             }
             if (testua.equals("Irten")) {
                 try {
@@ -234,6 +229,7 @@ public class MenuBarra {
                     throw new RuntimeException(ex);
                 }
                 itxura.dispose();
+                // System.exit(0);
             }
             if (testua.equals("Argia")) {
                 TemaKudeatzailea.ezarriArgiaTema();
@@ -264,16 +260,13 @@ public class MenuBarra {
                         JOptionPane.INFORMATION_MESSAGE);
             }
             if (testua.equals("Erabiltzailea Gehitu")) {
-                @SuppressWarnings("unused")
-                ErabiltzaileaSortuDialogoa erabiltzaileaSortuDialogoa = new ErabiltzaileaSortuDialogoa(itxura);
+                new ErabiltzaileaSortuDialogoa(itxura);
             }
             if (testua.equals("Erabiltzailea Kendu")) {
-                @SuppressWarnings("unused")
-                ErabiltzaileakEzabatuDialogoa erabiltzaileakEzabatuDialogoa = new ErabiltzaileakEzabatuDialogoa(itxura);
+                new ErabiltzaileakEzabatuDialogoa(itxura);
             }
             if (testua.equals("Mapa konfiguratu")) {
-                @SuppressWarnings("unused")
-                MapaKonfDialogoa mapaKonfDialogoa = new MapaKonfDialogoa(itxura);
+                new MapaKonfDialogoa(itxura);
             }
             if (testua.equals("Zoom Handitu")) {
                 itxura.getMapaPanela().zoomHanditu();

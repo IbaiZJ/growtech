@@ -219,6 +219,7 @@ public class NegutegiInfoPanela implements PropertyChangeListener {
                 MQTTDatuak.AZKEN_TENPERATURA = Double.parseDouble(azkenDatua);
                 tenperatura.setText(String.format(Locale.FRANCE, "%.1fºC", balioa));
             }
+            br.close();
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
@@ -233,6 +234,7 @@ public class NegutegiInfoPanela implements PropertyChangeListener {
                 MQTTDatuak.AZKEN_HEZETASUNA = Double.parseDouble(azkenDatua);
                 hezetasuna.setText(String.format(Locale.FRANCE, "%.1f%%", balioa));
             }
+            br.close();
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }

@@ -41,13 +41,6 @@
   "mota" : "USER",
   "negutegiak" : [ 1, 2, 3, 4 ]
 }, {
-  "izena" : "Mikel",
-  "abizena" : "Alvarez",
-  "erabiltzaile" : "mAlvarez",
-  "pasahitza" : "$2a$10$wMaJoPHGXQzGenDRIYmS6emSKWCsfUo6pjPijVKjIZT7pEwx5PEsW",
-  "mota" : "USER",
-  "negutegiak" : [ 8, 9, 10, 11 ]
-}, {
   "izena" : "Aimar",
   "abizena" : "Kobeaga",
   "erabiltzaile" : "gazpancho",

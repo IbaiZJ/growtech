@@ -7,10 +7,10 @@ import java.net.URL;
 public class IrudiaTestuFormatua {
 
     public static ImageIcon irudiaEskalatu(URL irudiPath, int x, int y) {
-        ImageIcon originalIcon = new ImageIcon(irudiPath);
-        Image scaledImage = originalIcon.getImage().getScaledInstance(x, y, Image.SCALE_SMOOTH);
-        ImageIcon resizedIcon = new ImageIcon(scaledImage);
-        return resizedIcon;
+        ImageIcon ikonoOriginala = new ImageIcon(irudiPath);
+        Image eskalatutakoIrudia = ikonoOriginala.getImage().getScaledInstance(x, y, Image.SCALE_SMOOTH);
+        ImageIcon eskalatutaIkonoa = new ImageIcon(eskalatutakoIrudia);
+        return eskalatutaIkonoa;
     }
 
     public static Component sortuTestuaFormatuarekin(String testua, Font font, Color color) {

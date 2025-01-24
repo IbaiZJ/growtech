@@ -86,7 +86,7 @@ public class LoginDialogoa extends JDialog implements ActionListener {
             alerta.setText("*Erabiltzailea edo pasahitza ez da zuzena");
             alerta.setForeground(Color.red);
             erabiltzailea.setText("");
-            erabiltzailea.requestFocus();
+            erabiltzailea.requestFocus(); // Erabiltzailea textfield aukeratzeko
             pasahitza.setText("");
         }
     }

@@ -157,6 +157,7 @@ public class Grafikoa {
                             dataset.addValue(Double.parseDouble(datua), topicIzena[0], String.valueOf(i));
                             i++;
                         }
+                        br.close();
                     }
                 }
             }
@@ -188,6 +189,7 @@ public class Grafikoa {
                             datasetHistorial.addValue(Double.parseDouble(datua), topicIzena[0], String.valueOf(i));
                             i++;
                         }
+                        br.close();
                     }
                 }
             }

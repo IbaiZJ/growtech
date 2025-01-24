@@ -38,6 +38,7 @@ public class NegutegiKudeaketa {
                             new Negutegia(id, herria, lurraldea, new GeoPosition(latitude, longitude), partzelaKop));
                 }
             }
+            irakurri.close();
 
         } catch (IOException e) {
             System.err.println("Errore bat gertatu bat negutegiak irakurtzerakoan");

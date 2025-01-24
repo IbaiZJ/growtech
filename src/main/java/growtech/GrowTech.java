@@ -18,6 +18,8 @@ import growtech.ui.theme.TemaKudeatzailea;
 public class GrowTech {
 
     private void UIModifikatu() {
+        // Honek konponente batzuen itxura bakarrik modifikatzen ditu, ez da beharrezkoa
+
         if (SystemInfo.isLinux) {
             JFrame.setDefaultLookAndFeelDecorated(true);
             JDialog.setDefaultLookAndFeelDecorated(true);
