@@ -129,9 +129,9 @@ public class Grafikoa {
         plot.getDomainAxis().setTickLabelFont(new Font("Arial", Font.PLAIN, 12));
         plot.getRangeAxis().setTickLabelFont(new Font("Arial", Font.PLAIN, 12));
 
-        ChartPanel chartPanel = new ChartPanel(chartHistoriala);
+            ChartPanel chartPanel = new ChartPanel(chartHistoriala);
 
-        panela.add(chartPanel);
+            panela.add(chartPanel);
 
         return panela;
     }
